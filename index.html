@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rumah Jelas — Home</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #0f1720;
+      --muted: #6b7280;
+      --primary: #1A4D2E; /* hijau */
+      --accent: #94BFA7;
+    }
+    [data-theme="dark"]{
+      --bg: #071019;
+      --card: #071827;
+      --text: #e6f0f0;
+      --muted: #9aa6ad;
+    }
+
+    html,body{
+      height:100%;
+      background:var(--bg);
+      color:var(--text);
+      font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      margin:0;
+    }
+
+    /* NAV */
+    .navbar{
+      background: transparent;
+      padding: 0.8rem 0;
+    }
+    .navbar .navbar-brand{
+      font-weight:700;
+      color:var(--text);
+    }
+
+    /* HERO */
+    .hero{
+      min-height:60vh;
+      background-image: linear-gradient(90deg, rgba(10,24,15,0.52), rgba(10,24,15,0.12)), url('img/hero1.jpg');
+      background-size:cover;
+      background-position:center;
+      display:flex;
+      align-items:center;
+      padding:4rem 0;
+      color: #fff;
+    }
+    .hero h1{
+      font-size:2.2rem;
+      line-height:1.05;
+      margin-bottom:0.6rem;
+      text-shadow: 0 6px 22px rgba(0,0,0,0.45);
+    }
+    .hero p.lead{
+      color: rgba(255,255,255,0.92);
+      margin-bottom:1rem;
+      text-shadow: 0 4px 18px rgba(0,0,0,0.25);
+    }
+
+    /* SEARCH CARD */
+    .search-card{
+      background:var(--card);
+      padding:1rem;
+      border-radius:12px;
+      box-shadow: 0 8px 30px rgba(12,20,30,0.06);
+      transform: translateY(-40px);
+    }
+
+    /* PROPERTY CARD */
+    .property-card{
+      border-radius:12px;
+      overflow:hidden;
+      background:var(--card);
+      transition: transform .22s ease, box-shadow .22s ease;
+      box-shadow: 0 8px 20px rgba(12,20,30,0.06);
+      height:100%;
+      display:flex;
+      flex-direction:column;
+    }
+    .property-card:hover{
+      transform: translateY(-8px);
+      box-shadow: 0 18px 40px rgba(12,20,30,0.12);
+    }
+    .property-card img{
+      width:100%;
+      height:180px;
+      object-fit:cover;
+    }
+    .property-card .card-body{
+      padding:1rem;
+      flex:1;
+    }
+    .badge-verified{
+      background: linear-gradient(90deg,var(--primary),var(--accent));
+      color:#fff;
+      font-weight:600;
+      font-size:12px;
+      padding:4px 8px;
+      border-radius:6px;
+    }
+    .price{
+      font-weight:700;
+      color:var(--primary);
+      font-size:1.05rem;
+    }
+
+    /* WISHLIST BUTTON */
+    .btn-wishlist{
+      border-radius:8px;
+    }
+
+    /* FOOTER */
+    footer{padding:2rem 0;background:transparent;color:var(--muted);}
+
+    /* responsiveness tweaks */
+    @media (max-width:768px){
+      .hero{padding:3rem 0;min-height:46vh}
+      .hero h1{font-size:1.6rem}
+      .property-card img{height:150px}
+      .search-card{transform:translateY(-20px)}
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">Rumah Jelas</a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item me-2"><a class="nav-link" href="properties.html">Properti</a></li>
+          <li class="nav-item me-2"><a class="nav-link" href="kpr.html">Simulasi KPR</a></li>
+          <li class="nav-item me-2"><a class="nav-link" href="wishlist.html">Wishlist</a></li>
+          <li class="nav-item me-3"><a class="nav-link" href="about.html">Tentang</a></li>
+          <li class="nav-item">
+            <button id="themeToggle" class="btn btn-outline-secondary btn-sm">Dark</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-7 text-white">
+          <h1>Temukan hunian terpercaya dengan informasi yang jelas</h1>
+          <p class="lead">Listing & agen terverifikasi · Simulasi KPR · Review pengguna · Peta interaktif (coming soon)</p>
+          <div class="d-flex gap-2">
+            <a href="properties.html" class="btn btn-light btn-lg">Lihat Properti</a>
+            <a href="kpr.html" class="btn btn-outline-light btn-lg">Simulasi KPR</a>
+          </div>
+        </div>
+
+        <div class="col-lg-5">
+          <!-- SEARCH / FILTER -->
+          <div class="search-card">
+            <div class="mb-2"><strong>Cari Properti</strong></div>
+
+            <div class="mb-2">
+              <input id="searchInput" type="text" class="form-control" placeholder="Cari lokasi atau nama properti...">
+            </div>
+
+            <div class="row g-2 mb-2">
+              <div class="col-6">
+                <select id="quickRooms" class="form-select">
+                  <option value="">Kamar</option>
+                  <option value="1">1+</option>
+                  <option value="2">2+</option>
+                  <option value="3">3+</option>
+                </select>
+              </div>
+              <div class="col-6">
+                <select id="quickVerified" class="form-select">
+                  <option value="all">Semua</option>
+                  <option value="verified">Terverifikasi</option>
+                  <option value="unverified">Belum</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button id="searchBtn" class="btn btn-main w-100">Cari</button>
+              <button id="clearBtn" class="btn btn-outline-secondary w-100">Reset</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN: Featured & Listing -->
+  <main class="py-5">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="mb-0">Properti Unggulan</h3>
+        <small class="text-muted">Tersedia: <span id="countBadge">0</span></small>
+      </div>
+
+      <div class="row" id="propertyList">
+        <!-- property cards akan dirender via JS -->
+      </div>
+
+      <div class="text-center mt-4">
+        <a href="properties.html" class="btn btn-outline-secondary">Lihat semua properti</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container d-flex justify-content-between align-items-center">
+      <div>© 2025 Rumah Jelas</div>
+      <div class="text-muted small">Dibuat untuk tugas UI/UX — Aghni & tim</div>
+    </div>
+  </footer>
+
+  <!-- jQuery & Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // ===== sample data properti (embed supaya index.html langsung jalan)
+    const properties = [
+      { id:1, nama:"Rumah Modern Minimalis", harga:450000000, lokasi:"Solo, Ngesrep", kamar:3, verified:true, img:"img/rumah1.jpg", desc:"Desain modern minimalis, lingkungan aman, 5 menit ke pusat kota." },
+      { id:2, nama:"Cluster Hijau Family", harga:380000000, lokasi:"Karanganyar, Tawangmangu", kamar:2, verified:false, img:"img/rumah2.jpg", desc:"Cluster baru dekat fasilitas umum, cocok untuk keluarga kecil." },
+      { id:3, nama:"Vila Asri Permai", harga:1200000000, lokasi:"Sukoharjo, dekat tol", kamar:4, verified:true, img:"img/rumah3.jpg", desc:"Vila premium, area luas, dilengkapi taman dan garasi." }
+    ];
+
+    // ===== util
+    function formatRupiah(num){ return "Rp " + (Number(num) || 0).toLocaleString('id-ID'); }
+
+    // ===== theme
+    (function(){
+      const saved = localStorage.getItem('theme');
+      if(saved === 'dark') document.documentElement.setAttribute('data-theme','dark');
+      $('#themeToggle').text(saved==='dark' ? 'Light' : 'Dark');
+      $('#themeToggle').on('click', function(){
+        const cur = document.documentElement.getAttribute('data-theme');
+        if(cur === 'dark'){
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme','light');
+          $(this).text('Dark');
+        } else {
+          document.documentElement.setAttribute('data-theme','dark');
+          localStorage.setItem('theme','dark');
+          $(this).text('Light');
+        }
+      });
+    })();
+
+    // ===== render list
+    function renderList(list){
+      const $list = $('#propertyList');
+      $list.empty();
+      if(!list || list.length === 0){
+        $list.html('<div class="col-12"><div class="alert alert-warning">Tidak ada properti ditemukan.</div></div>');
+        $('#countBadge').text(0);
+        return;
+      }
+      $('#countBadge').text(list.length);
+      list.forEach(p => {
+        const verifiedBadge = p.verified ? '<span class="badge-verified ms-1">Verified</span>' : '';
+        const card = $(`
+          <div class="col-md-6 col-lg-4 mb-4">
+            <div class="property-card card h-100">
+              <img src="${p.img}" alt="${p.nama}">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start">
+                  <h5 class="mb-1">${p.nama} ${verifiedBadge}</h5>
+                  <div class="text-end small text-muted">${p.kamar} kamar</div>
+                </div>
+                <p class="small text-muted mb-1">${p.lokasi}</p>
+                <div class="price mb-2">${formatRupiah(p.harga)}</div>
+                <p class="small text-muted mb-3">${p.desc}</p>
+                <div class="mt-auto d-flex gap-2">
+                  <a href="detail.html?id=${p.id}" class="btn btn-sm btn-primary">Detail</a>
+                  <button class="btn btn-sm btn-outline-danger btn-wishlist" data-id="${p.id}">❤️ Wishlist</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `);
+        $list.append(card);
+      });
+    }
+
+    // initial render
+    $(function(){
+      renderList(properties);
+
+      // SEARCH & quick filters
+      $('#searchBtn').on('click', applyFilters);
+      $('#clearBtn').on('click', function(){
+        $('#searchInput').val('');
+        $('#quickRooms').val('');
+        $('#quickVerified').val('all');
+        renderList(properties);
+      });
+
+      $('#searchInput').on('keyup', function(e){
+        if(e.key === 'Enter') applyFilters();
+      });
+
+      function applyFilters(){
+        const q = $('#searchInput').val().trim().toLowerCase();
+        const rooms = $('#quickRooms').val();
+        const verified = $('#quickVerified').val();
+        let filtered = properties.filter(p => {
+          const text = (p.nama + ' ' + p.lokasi).toLowerCase();
+          return q ? text.includes(q) : true;
+        });
+        if(rooms) filtered = filtered.filter(p => p.kamar >= Number(rooms));
+        if(verified !== 'all') filtered = filtered.filter(p => verified === 'verified' ? p.verified : !p.verified);
+        renderList(filtered);
+      }
+
+      // wishlist
+      $(document).on('click', '.btn-wishlist', function(){
+        const id = Number($(this).data('id'));
+        let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+        if(!wishlist.includes(id)) wishlist.push(id);
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        $(this).text('✔ Disimpan');
+        setTimeout(()=> $(this).text('❤️ Wishlist'), 1200);
+      });
+    });
+  </script>
+
+</body>
+</html>
