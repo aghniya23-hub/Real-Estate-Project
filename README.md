@@ -1,10 +1,4 @@
-Siap aghni! 🎉
-Ini **README.md super profesional, rapi, lengkap**, cocok buat GitHub dan laporan.
-Langsung copy–paste ke repo GitHub kamu.
-
----
-
-# 📄 **README.md — Real Estate Website Project**
+Real Estate Website Project
 
 ```markdown
 # 🏡 Real Estate Website — Rumah Jelas
@@ -136,7 +130,7 @@ real-estate-project/
    >>>>>>>>
    ```
 
----
+
 
 ## 📌 Catatan Penting
 
@@ -164,16 +158,3 @@ Tidak untuk penggunaan komersial.
 
 Kelompok Web Programming — 2025
 "Semoga Dosen Sayang Kita Semua ❤️"
-
-```
-
----
-
-# Kamu mau aku bikinkan juga:
-✅ versi README untuk **laporan Word**  
-atau  
-✅ README dengan **desain markdown yang lebih aesthetic**?
-
-Bilang aja ya aghni 💚
-```
-
