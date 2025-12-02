@@ -302,71 +302,39 @@
             <div class="col-lg-5">
                 <div class="card">
                     <h4 class="mb-3"><i class="fas fa-chart-bar"></i> Input Data KPR</h4>
-
                     <div class="input-group-custom">
-                        <label>
-                            <span><i class="fas fa-dollar-sign"></i> Harga Rumah</span>
-                            <span class="value-display" id="hargaDisplay">Rp 450.000.000</span>
+                        <label for="hargaInput">
+                            <span><i class="fas fa-dollar-sign"></i> Harga Rumah (Rp)</span>
                         </label>
-                        <div class="slider-container">
-                            <input type="range" id="hargaSlider" min="100000000" max="5000000000" step="10000000"
-                                value="450000000">
-                        </div>
-                        <div class="d-flex justify-content-between small text-muted">
-                            <span>Rp 100 jt</span>
-                            <span>Rp 5 M</span>
-                        </div>
+                        <input type="text" id="hargaInput" class="form-control" value="450.000.000" inputmode="numeric">
                     </div>
-
+                    
                     <div class="input-group-custom">
-                        <label>
-                            <span><i class="fas fa-credit-card"></i> Uang Muka (DP)</span>
-                            <span class="value-display" id="dpDisplay">Rp 45.000.000 (10%)</span>
+                        <label for="dpInput">
+                            <span><i class="fas fa-credit-card"></i> Uang Muka (DP) (%)</span>
                         </label>
-                        <div class="slider-container">
-                            <input type="range" id="dpSlider" min="0" max="50" step="1" value="10">
-                        </div>
-                        <div class="d-flex justify-content-between small text-muted">
-                            <span>0%</span>
-                            <span>50%</span>
-                        </div>
+                        <input type="number" id="dpInput" class="form-control" value="10" min="0" max="100" step="1">
+                        <div class="small text-muted mt-1" id="dpNominalDisplay">Nominal: Rp 45.000.000</div>
                     </div>
-
+                    
                     <div class="input-group-custom">
-                        <label>
-                            <span><i class="fas fa-chart-line"></i> Suku Bunga per Tahun</span>
-                            <span class="value-display" id="bungaDisplay">7.5%</span>
+                        <label for="bungaInput">
+                            <span><i class="fas fa-chart-line"></i> Suku Bunga per Tahun (%)</span>
                         </label>
-                        <div class="slider-container">
-                            <input type="range" id="bungaSlider" min="3" max="15" step="0.1" value="7.5">
-                        </div>
-                        <div class="d-flex justify-content-between small text-muted">
-                            <span>3%</span>
-                            <span>15%</span>
-                        </div>
+                        <input type="number" id="bungaInput" class="form-control" value="7.5" step="0.1" min="0">
                     </div>
-
+                    
                     <div class="input-group-custom">
-                        <label>
-                            <span><i class="fas fa-clock"></i> Jangka Waktu (Tenor)</span>
-                            <span class="value-display" id="tenorDisplay">15 tahun</span>
+                        <label for="tenorInput">
+                            <span><i class="fas fa-clock"></i> Jangka Waktu (Tenor) (Tahun)</span>
                         </label>
-                        <div class="slider-container">
-                            <input type="range" id="tenorSlider" min="1" max="30" step="1" value="15">
-                        </div>
-                        <div class="d-flex justify-content-between small text-muted">
-                            <span>1 tahun</span>
-                            <span>30 tahun</span>
-                        </div>
+                        <input type="number" id="tenorInput" class="form-control" value="15" min="1" step="1">
                     </div>
-
+                    
                     <div class="d-grid gap-2">
-                        <button class="btn btn-primary" id="hitungBtn"><i class="fas fa-calculator"></i> Hitung
-                            Cicilan</button>
-                        <button class="btn btn-outline-primary" id="saveBtn"><i class="fas fa-save"></i> Simpan
-                            Simulasi</button>
-                        <button class="btn btn-outline-secondary" id="resetBtn"><i class="fas fa-sync-alt"></i>
-                            Reset</button>
+                        <button class="btn btn-primary" id="hitungBtn"><i class="fas fa-calculator"></i> Hitung Cicilan</button>
+                        <button class="btn btn-outline-primary" id="saveBtn"><i class="fas fa-save"></i> Simpan Simulasi</button>
+                        <button class="btn btn-outline-secondary" id="resetBtn"><i class="fas fa-sync-alt"></i> Reset</button>
                     </div>
                 </div>
 
@@ -449,6 +417,10 @@
     </main>
 
     <script src="js/scriptkpr.js"></script>
+
+    <footer class="text-center py-4 mt-4">
+  <p class="mb-0">© 2025 Lokaterra — Tempat Terbaik Untuk Memulai Kehidupan Baru</p>
+</footer>
 
 </body>
 
