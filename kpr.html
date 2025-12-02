@@ -1,65 +1,455 @@
-
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Simulasi KPR - Rumah Jelas</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<link rel="stylesheet" href="css/style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Simulasi KPR - Lokaterra</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --bg: #f6f7fb;
+            --card: #ffffff;
+            --text: #0f1720;
+            --muted: #6b7280;
+            --primary: #1A4D2E;
+            --accent: #94BFA7;
+            --success: #22c55e;
+            --warning: #f59e0b;
+        }
+
+        [data-theme="dark"] {
+            --bg: #071019;
+            --card: #071827;
+            --text: #e6f0f0;
+            --muted: #9aa6ad;
+            --primary: #94BFA7;
+            --accent: #1A4D2E;
+        }
+
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background: var(--card);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            padding: 3rem 0;
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero-section h1 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-section p {
+            opacity: 0.95;
+            font-size: 1.1rem;
+        }
+
+        .card {
+            background: var(--card);
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .input-group-custom {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group-custom label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .input-group-custom .value-display {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .slider-container {
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: linear-gradient(to right, var(--primary) 0%, var(--accent) 100%);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+        }
+
+        .result-card .label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-card .value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-card .subtext {
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        .info-box {
+            background: var(--card);
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .info-box .icon {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            background: transparent;
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .table-responsive {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .table {
+            margin-bottom: 0;
+            color: var(--text);
+        }
+
+        .table thead {
+            background: var(--primary);
+            color: white;
+        }
+
+        .table tbody tr:hover {
+            background: rgba(26, 77, 46, 0.05);
+        }
+
+        [data-theme="dark"] .table tbody tr:hover {
+            background: rgba(148, 191, 167, 0.1);
+        }
+
+        .history-item {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--accent);
+            transition: all 0.2s;
+        }
+
+        .history-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 1rem;
+        }
+
+        .badge-custom {
+            background: var(--success);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            display: inline-block;
+            margin: 0.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .result-card .value {
+                font-size: 1.8rem;
+            }
+
+            .hero-section {
+                padding: 2rem 0;
+            }
+        }
+
+        .input-group-custom label i {
+            margin-right: 5px;
+            color: var(--primary);
+        }
+
+        .info-box i {
+            color: var(--primary);
+        }
+    </style>
 </head>
+
 <body>
-<nav class="navbar navbar-expand-lg" id="mainNavbar">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="index.html">Rumah Jelas</a>
-  </div>
-</nav>
 
-<main class="py-5">
-  <div class="container">
-    <h3>Simulasi KPR</h3>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="card p-3">
-          <div class="mb-3">
-            <label class="form-label">Harga Rumah (Rp)</label>
-            <input id="harga" class="form-control" value="450000000">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">DP (Rp)</label>
-            <input id="dp" class="form-control" value="45000000">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Bunga (% per tahun)</label>
-            <input id="bunga" class="form-control" value="7.5">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Tenor (tahun)</label>
-            <input id="tenor" class="form-control" value="15">
-          </div>
-          <button class="btn btn-primary" id="hitungBtn">Hitung</button>
-          <button class="btn btn-outline-secondary" id="saveSim">Simpan</button>
+    <nav class="navbar">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-house-damage"></i> Rumah Jelas</a>
+            <button id="themeToggle" class="btn btn-sm btn-outline-secondary">🌙 Dark Mode</button>
         </div>
-      </div>
+    </nav>
 
-      <div class="col-md-6">
-        <div class="card p-3">
-          <h5>Hasil</h5>
-          <div id="hasil">Belum dihitung</div>
-          <div id="amort" class="mt-3"></div>
+    <div class="hero-section">
+        <div class="container">
+            <h1><i class="fas fa-money-bill-wave"></i> Kalkulator KPR</h1>
+            <p>Hitung simulasi cicilan rumah impian Anda dengan mudah dan akurat</p>
         </div>
-      </div>
     </div>
 
-    <div class="mt-4">
-      <h5>Riwayat Simulasi</h5>
-      <div id="simHistory"></div>
-    </div>
-  </div>
-</main>
+    <main class="container pb-5">
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="card">
+                    <h4 class="mb-3"><i class="fas fa-chart-bar"></i> Input Data KPR</h4>
 
-<script src="js/kpr.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+                    <div class="input-group-custom">
+                        <label>
+                            <span><i class="fas fa-dollar-sign"></i> Harga Rumah</span>
+                            <span class="value-display" id="hargaDisplay">Rp 450.000.000</span>
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" id="hargaSlider" min="100000000" max="5000000000" step="10000000"
+                                value="450000000">
+                        </div>
+                        <div class="d-flex justify-content-between small text-muted">
+                            <span>Rp 100 jt</span>
+                            <span>Rp 5 M</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group-custom">
+                        <label>
+                            <span><i class="fas fa-credit-card"></i> Uang Muka (DP)</span>
+                            <span class="value-display" id="dpDisplay">Rp 45.000.000 (10%)</span>
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" id="dpSlider" min="0" max="50" step="1" value="10">
+                        </div>
+                        <div class="d-flex justify-content-between small text-muted">
+                            <span>0%</span>
+                            <span>50%</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group-custom">
+                        <label>
+                            <span><i class="fas fa-chart-line"></i> Suku Bunga per Tahun</span>
+                            <span class="value-display" id="bungaDisplay">7.5%</span>
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" id="bungaSlider" min="3" max="15" step="0.1" value="7.5">
+                        </div>
+                        <div class="d-flex justify-content-between small text-muted">
+                            <span>3%</span>
+                            <span>15%</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group-custom">
+                        <label>
+                            <span><i class="fas fa-clock"></i> Jangka Waktu (Tenor)</span>
+                            <span class="value-display" id="tenorDisplay">15 tahun</span>
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" id="tenorSlider" min="1" max="30" step="1" value="15">
+                        </div>
+                        <div class="d-flex justify-content-between small text-muted">
+                            <span>1 tahun</span>
+                            <span>30 tahun</span>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" id="hitungBtn"><i class="fas fa-calculator"></i> Hitung
+                            Cicilan</button>
+                        <button class="btn btn-outline-primary" id="saveBtn"><i class="fas fa-save"></i> Simpan
+                            Simulasi</button>
+                        <button class="btn btn-outline-secondary" id="resetBtn"><i class="fas fa-sync-alt"></i>
+                            Reset</button>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <strong><i class="fas fa-lightbulb"></i> Tips:</strong> DP minimal biasanya 10-20% dari harga rumah.
+                    Semakin besar DP, semakin kecil cicilan bulanan Anda.
+                </div>
+
+                <div class="card mt-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0"><i class="fas fa-history"></i> Riwayat Simulasi</h5>
+                        <button class="btn btn-sm btn-outline-danger" id="clearHistory"><i class="fas fa-trash-alt"></i>
+                            Hapus Semua</button>
+                    </div>
+                    <div id="historyContainer">
+                        <p class="text-muted text-center">Belum ada riwayat simulasi</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="result-card">
+                    <div class="label">Cicilan per Bulan</div>
+                    <div class="value" id="cicilanResult">Rp 0</div>
+                    <div class="subtext" id="resultSubtext">Klik "Hitung Cicilan" untuk melihat hasil</div>
+                </div>
+
+                <div class="card">
+                    <h5 class="mb-3"><i class="fas fa-clipboard-list"></i> Rincian Pinjaman</h5>
+                    <div class="row text-center">
+                        <div class="col-6 col-md-3 mb-3">
+                            <div class="small text-muted">Pinjaman</div>
+                            <div class="fw-bold" id="pinjamanTotal">Rp 0</div>
+                        </div>
+                        <div class="col-6 col-md-3 mb-3">
+                            <div class="small text-muted">Total Bayar</div>
+                            <div class="fw-bold" id="totalBayar">Rp 0</div>
+                        </div>
+                        <div class="col-6 col-md-3 mb-3">
+                            <div class="small text-muted">Total Bunga</div>
+                            <div class="fw-bold text-warning" id="totalBunga">Rp 0</div>
+                        </div>
+                        <div class="col-6 col-md-3 mb-3">
+                            <div class="small text-muted">Lama Cicilan</div>
+                            <div class="fw-bold" id="lamaCicilan">0 bulan</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h5 class="mb-3"><i class="fas fa-chart-pie"></i> Grafik Komposisi Pembayaran</h5>
+                    <div class="chart-container">
+                        <canvas id="paymentChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h5 class="mb-3"><i class="fas fa-table"></i> Tabel Amortisasi (12 Bulan Pertama)</h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Bulan</th>
+                                    <th>Cicilan</th>
+                                    <th>Bunga</th>
+                                    <th>Pokok</th>
+                                    <th>Sisa Pinjaman</th>
+                                </tr>
+                            </thead>
+                            <tbody id="amortTable">
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted">Belum ada data</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/scriptkpr.js"></script>
+
 </body>
+
 </html>
