@@ -7,6 +7,19 @@ Fokus pada fitur pencarian rumah, filter lengkap, detail properti, wishlist, dan
 
 ---
 
+## 🖼️ Preview Project
+> *(Pastikan file ini ada di folder img/)*
+
+![rumah](img/rumah.jpg)
+
+| Rumah 1 | Rumah 2 |
+|--------|---------|
+| <img src="img/rumah3.jpeg" width="250"> | <img src="img/rumah2.jpeg" width="250"> |
+
+
+---
+---
+
 ## ✨ Fitur Utama
 - **Landing Page Modern** (Hero, Feature section)
 - **Daftar Properti (Properties Page)**  
