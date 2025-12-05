@@ -122,7 +122,14 @@
     }
 
     /* FOOTER */
-    footer{padding:2rem 0;background:transparent;color:var(--muted);}
+    footer{
+      background:#1A4D2E;
+      color:#fff;
+      padding:2rem 0;
+      margin-top:3rem;
+    }
+    footer a{color:#d4ffe4;text-decoration:none;}
+    footer a:hover{text-decoration:underline;}
 
     /* responsiveness tweaks */
     @media (max-width:768px){
@@ -229,9 +236,28 @@
   </main>
 
   <footer>
-    <div class="container d-flex justify-content-between align-items-center">
-      <div>© 2025 Rumah Jelas</div>
-      <div class="text-muted small">Dibuat untuk tugas UI/UX — Aghni & tim</div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <h5 class="fw-bold">Lokaterra</h5>
+          <p class="small">Platform pencarian properti terpercaya dengan informasi jelas dan akurat.</p>
+        </div>
+        <div class="col-md-4 mb-3">
+          <h6 class="fw-semibold">Navigasi</h6>
+          <ul class="list-unstyled small">
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="properties.html">Properti</a></li>
+            <li><a href="kpr.html">Simulasi KPR</a></li>
+            <li><a href="about.html">Tentang</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 mb-3">
+          <h6 class="fw-semibold">Kontak</h6>
+          <p class="small mb-1">Email: support@lokaterra.com</p>
+          <p class="small mb-1">Telepon: +62 812-3456-7890</p>
+        </div>
+      </div>
+      <div class="text-center small mt-3">@ 2025 Lokaterra</div>
     </div>
   </footer>
 
