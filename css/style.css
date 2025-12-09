@@ -1,78 +1,52 @@
-/* ---------- Root Variables ---------- */
+/* ===========================
+   Rumah Jelas — style.css
+   Redesigned by Mas Al (for Aghni)
+   Paste this whole file to replace your old style.css
+   =========================== */
+
+/* ---------- Root variables ---------- */
 :root{
   --bg: #f6f7fb;
   --card: #ffffff;
   --text: #0f1720;
   --muted: #6b7280;
-
   --primary-900: #0b3f23;
   --primary-700: #1a6b3d;
   --primary-500: #3aa46a;
   --accent: #94BFA7;
-
   --glass: rgba(255,255,255,0.65);
   --radius-lg: 16px;
   --radius-md: 10px;
   --shadow-soft: 0 6px 24px rgba(12,20,30,0.06);
   --shadow-strong: 0 18px 40px rgba(12,20,30,0.12);
-
   --max-width: 1200px;
   --container-padding: 1.25rem;
 }
 
-/* ---------- Dark Mode ---------- */
+/* Dark theme overrides */
 [data-theme="dark"]{
-  --bg: #0b121a;
-  --card: #0e1a25;
-
-  --text: #f5faff;
-  --muted: #b7c4cc;
-
-  --primary-900: #2dd4bf;
-  --primary-700: #4ade80;
-  --primary-500: #86efac;
-
-  --accent: #5eead4;
-  --glass: rgba(20,32,42,0.55);
-}
-
-/* TEXT FIX IN DARK MODE */
-[data-theme="dark"] h1,
-[data-theme="dark"] h2,
-[data-theme="dark"] h3,
-[data-theme="dark"] h4,
-[data-theme="dark"] h5 {
-  color: var(--text) !important;
-}
-
-[data-theme="dark"] p,
-[data-theme="dark"] .small,
-[data-theme="dark"] .text-muted {
-  color: var(--muted) !important;
-}
-
-[data-theme="dark"] .price {
-  color: var(--primary-500) !important;
-}
-
-/* Navbar fix */
-[data-theme="dark"] .navbar-brand,
-[data-theme="dark"] .nav-link {
-  color: var(--text) !important;
+  --bg: #071019;
+  --card: #071827;
+  --text: #e6f0f0;
+  --muted: #9aa6ad;
+  --glass: rgba(10,18,22,0.45);
 }
 
 /* ---------- Base ---------- */
-*{ box-sizing: border-box }
-html, body{ height:100%; }
-
+*{box-sizing:border-box}
+html,body{height:100%}
 body{
   margin:0;
-  font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Arial;
-  background: var(--bg);
-  color: var(--text);
-  transition: background .28s ease, color .28s ease;
+  font-family: 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  transition: background-color .28s ease, color .28s ease;
 }
 
+/* Utility container */
 .container{
   max-width: var(--max-width);
   margin: 0 auto;
@@ -81,173 +55,267 @@ body{
 
 /* ---------- Navbar ---------- */
 .navbar{
-  padding:.9rem 0;
+  padding: .9rem 0;
   position: sticky;
-  top:0; z-index:40;
-  background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(255,255,255,0.55));
+  top:0;
+  z-index:40;
+  background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0.60));
   backdrop-filter: blur(8px);
-  border-bottom:1px solid rgba(0,0,0,0.03);
+  box-shadow: 0 4px 18px rgba(8,10,12,0.05);
+  border-bottom: 1px solid rgba(0,0,0,0.03);
 }
-
 [data-theme="dark"] .navbar{
-  background: linear-gradient(180deg, rgba(12,20,30,0.65), rgba(12,20,30,0.45));
-  border-bottom:1px solid rgba(255,255,255,0.05);
+  background: linear-gradient(180deg, rgba(10,18,22,0.65), rgba(10,18,22,0.5));
+  border-bottom: 1px solid rgba(255,255,255,0.03);
 }
+.navbar .navbar-brand{
+  font-weight:700;
+  color:var(--primary-900);
+  display:flex;
+  gap:.5rem;
+  align-items:center;
+}
+[data-theme="dark"] .navbar .navbar-brand{ color: var(--accent); }
 
 .navbar .nav-link{
-  color: var(--muted);
-  transition:.18s ease;
+  color:var(--muted);
+  padding: .5rem .6rem;
+  transition: color .18s ease;
 }
-.navbar .nav-link:hover{
-  color: var(--primary-700);
-}
+.navbar .nav-link:hover{ color: var(--primary-700); }
 
-.navbar-brand{
-  font-weight:700;
-  color: var(--primary-900);
-}
-
-[data-theme="dark"] .navbar-brand{
-  color: var(--accent) !important;
-}
-
-/* Toggler */
-.navbar-toggler { border:none; }
-.navbar-toggler-icon{
-  width:28px; height:20px;
-  background-repeat:no-repeat;
-  background-position:center;
-  background-image:url("data:image/svg+xml,%3Csvg stroke='%230f1720' stroke-width='2' viewBox='0 0 30 30'%3E%3Cpath d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+/* Navbar toggler icon (ensure visibility) */
+.navbar-toggler { border: none; background: transparent; }
+.navbar-toggler-icon {
+  width: 28px; height: 20px;
+  display:inline-block;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='%230f1720' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
 }
 [data-theme="dark"] .navbar-toggler-icon{
-  background-image:url("data:image/svg+xml,%3Csvg stroke='%23f5faff' stroke-width='2' viewBox='0 0 30 30'%3E%3Cpath d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='%23e6f0f0' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
 }
 
 /* ---------- Hero ---------- */
 .hero{
-  min-height:54vh;
+  min-height: 54vh;
   display:flex;
   align-items:center;
   padding:4rem 0;
-  border-radius:0 0 26px 26px;
-
-  background-image:
-    linear-gradient(90deg, rgba(10,24,15,0.52), rgba(10,24,15,0.12)),
-    url('img/fotomenuutama.png');
-  background-size:cover;
-  background-position:center;
-
-  color: var(--text);
+  color: #fff;
+  background: linear-gradient(135deg, var(--primary-900), var(--primary-700) 45%, var(--primary-500) 100%);
+  border-radius: 0 0 28px 28px;
+  box-shadow: var(--shadow-soft);
+  margin-bottom: 1.5rem;
 }
-
-.hero h1{
-  font-size:2.6rem;
-  font-weight:800;
-  text-shadow:0 10px 30px rgba(0,0,0,0.15);
-}
-
 .hero .lead{
-  color: rgba(255,255,255,0.88);
+  color: rgba(255,255,255,0.92);
+  margin-bottom:1.2rem;
+  font-size:1.05rem;
+}
+.hero h1{
+  font-size: 2.6rem;
+  line-height:1.05;
+  font-weight:800;
+  margin-bottom:.6rem;
+  text-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
-/* ---------- Search Card ---------- */
+/* hero buttons */
+.hero .btn {
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-weight:600;
+}
+.hero .btn-primary {
+  background: #fff;
+  color: var(--primary-700);
+  border: none;
+  box-shadow: 0 6px 18px rgba(10,30,20,0.08);
+}
+.hero .btn-primary:hover { transform: translateY(-3px); background:#f8fff9; }
+.hero .btn-outline-light {
+  background: transparent;
+  color: rgba(255,255,255,0.95);
+  border: 1.5px solid rgba(255,255,255,0.15);
+}
+.hero .btn-outline-light:hover { background: rgba(255,255,255,0.06); }
+
+/* ---------- Search Card (floating) ---------- */
 .search-card{
-  background:var(--card);
-  padding:18px;
-  border-radius:14px;
-  transform:translateY(-40px);
+  background: var(--card);
+  padding: 18px;
+  border-radius: 14px;
   box-shadow: var(--shadow-strong);
+  transform: translateY(-40px);
+  width:100%;
+  max-width:420px;
 }
-
-.search-card .form-control,
-.search-card .form-select{
+@media(max-width: 992px){
+  .search-card{ transform: translateY(-20px); max-width: 100%; }
+}
+.search-card .form-control, .search-card .form-select {
   height:46px;
   border-radius:8px;
   border:1px solid rgba(12,20,30,0.06);
 }
+.search-card .btn { height:46px; }
 
-/* ---------- Property Grid ---------- */
-#propertyList{
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
-  gap:1.5rem;
+/* ---------- Main / Sections ---------- */
+main { padding: 1.5rem 0 4rem; }
+.section-title {
+  font-size: 1.5rem;
+  font-weight:700;
+  margin-bottom:1.25rem;
 }
+
+/* ---------- Property List Grid ---------- */
+#propertyList {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+@media(max-width: 992px){ #propertyList { grid-template-columns: repeat(2, 1fr); } }
+@media(max-width: 576px){ #propertyList { grid-template-columns: 1fr; } }
 
 /* ---------- Property Card ---------- */
 .property-card{
   display:flex;
   flex-direction:column;
-  background:var(--card);
-  border-radius:var(--radius-lg);
+  border-radius: var(--radius-lg);
   overflow:hidden;
-  box-shadow:var(--shadow-soft);
-  transition:.25s ease;
+  background: var(--card);
+  box-shadow: var(--shadow-soft);
+  transition: transform .25s ease, box-shadow .25s ease;
+  height:100%;
 }
 .property-card:hover{
-  transform:translateY(-6px);
-  box-shadow:var(--shadow-strong);
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-strong);
 }
-
 .property-card img{
   width:100%;
-  height:220px;
-  object-fit:cover;
+  height: 220px;
+  object-fit: cover;
+  display:block;
+  background: linear-gradient(180deg, rgba(0,0,0,0.04), rgba(0,0,0,0.02));
 }
-
-/* title card fix */
+.property-card .card-body{
+  padding: 1.1rem;
+  display:flex;
+  flex-direction:column;
+  gap: .6rem;
+}
 .property-card h5{
-  color:var(--text);
+  font-size:1.05rem;
+  margin:0;
+  display:flex;
+  align-items:center;
+  gap:.5rem;
 }
-
-/* lokasi, deskripsi */
-.property-card p{
-  color:var(--muted);
-}
-
-/* verified badge */
+.property-card .small { color:var(--muted); }
 .badge-verified{
-  background:linear-gradient(90deg, var(--primary-700), var(--accent));
+  background: linear-gradient(90deg, var(--primary-700), var(--accent));
   color:#fff;
+  font-weight:600;
+  font-size:12px;
   padding:4px 8px;
   border-radius:8px;
-  font-size:12px;
-  font-weight:600;
 }
 
-/* ---------- Price ---------- */
+/* price */
 .price{
-  color:var(--primary-700);
   font-weight:800;
-  font-size:1.05rem;
+  color:var(--primary-700);
+  font-size:1.03rem;
 }
 
-/* ---------- Buttons ---------- */
-.btn{
-  border-radius:10px;
-  transition:.18s ease;
+/* wishlist button smaller */
+.btn-wishlist{
+  border-radius:8px;
 }
-.btn-outline-secondary{
-  border:1px solid rgba(12,20,30,0.08);
-  color:var(--muted);
+
+/* ---------- Rincian Pinjaman / Results Card ---------- */
+.results-card{
+  border-radius: 14px;
+  padding: 20px;
+  background: linear-gradient(90deg, rgba(26,107,61,0.06), rgba(148,191,167,0.07));
+  box-shadow: var(--shadow-soft);
 }
-.btn-outline-secondary:hover{
-  background:rgba(0,0,0,0.03);
+.results-card .big{
+  font-size: 2.1rem;
+  font-weight:800;
+  color:var(--primary-700);
 }
 
 /* ---------- Footer ---------- */
 footer{
   padding:2.25rem 0;
+  color: var(--muted);
+  border-top:1px solid rgba(12,20,30,0.04);
+}
+footer .small { color:var(--muted); }
+
+/* ---------- Buttons global ---------- */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:.45rem;
+  cursor:pointer;
+  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease;
+}
+.btn:active{ transform: translateY(0); }
+.btn-outline-secondary{
+  border-radius:10px;
+  background: transparent;
+  border:1px solid rgba(12,20,30,0.07);
   color:var(--muted);
-  border-top:1px solid rgba(0,0,0,0.05);
+}
+.btn-outline-secondary:hover{
+  background: rgba(0,0,0,0.02);
 }
 
-[data-theme="dark"] footer{
-  border-top:1px solid rgba(255,255,255,0.07);
-}
+/* ---------- Typography tweaks ---------- */
+h1,h2,h3,h4,h5{ color:var(--text); margin:0 0 .35rem 0; }
+p{ margin:0 0 .8rem 0; color:var(--muted) }
 
-/* ---------- Responsive ---------- */
-@media(max-width:768px){
-  .hero{ padding:3rem 0; min-height:46vh; }
+/* ---------- Spacing helpers ---------- */
+.mb-1{ margin-bottom:.4rem }
+.mb-2{ margin-bottom:.75rem }
+.mb-3{ margin-bottom:1.25rem }
+.mt-auto{ margin-top:auto }
+
+/* ---------- Small screens adjustments ---------- */
+@media (max-width: 768px) {
+  .hero { padding:3.2rem 0; min-height:46vh; border-radius:0 0 18px 18px; }
   .hero h1{ font-size:1.55rem; }
-  .property-card img{ height:160px; }
+  .hero .lead{ font-size:0.98rem; }
+  .navbar .navbar-brand{ font-size:1.05rem; }
+  #propertyList{ gap:1rem; }
+  .property-card img{ height: 160px; }
+  .search-card{ transform: translateY(-20px); padding:16px; }
 }
+
+/* ---------- Accessibility / focus ---------- */
+a:focus, button:focus, .form-control:focus { outline: none; box-shadow: 0 6px 20px rgba(26,107,61,0.12); }
+
+/* ---------- Minor interactive niceties ---------- */
+.property-card .price, .results-card .big { transition: color .18s ease; }
+.property-card .btn-primary, .property-card .btn-outline-danger { min-width:100px; }
+
+/* ---------- Dark tidy up ---------- */
+[data-theme="dark"] body {
+  background: #071019;
+}
+[data-theme="dark"] .property-card {
+  background: #071827;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+[data-theme="dark"] .search-card {
+  background: rgba(10,18,22,0.6);
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* ---------- End of file ---------- */
