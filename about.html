@@ -3,51 +3,65 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Tentang Kami - Lokaterra</title>
+    <title>Tentang Kami | Lokaterra</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
         /* =======================================
-           1. DEFINISI WARNA & TEMA (HIJAU KPR)
+           1. DEFINISI WARNA & TEMA
            ======================================= */
         :root {
-            /* Warna Primary (HIJAU KPR - Light Mode) */
-            --primary: #4B8E3B; 
-            --accent: #F6E4C3;  
+            /* Warna Hijau Utama & Aksen yang sudah konsisten */
+            --primary:  #0b3f23;
+            --accent: #F6E4C3; 
             
             /* Warna Dasar Tema Terang */
-            --bg: #f6f7fb;       
-            --card: #ffffff;     
-            --text: #0f1720;     
-            --muted: #68a07b;    
-            --success: #28a745;
+            --bg: #f6f7fb;
+            --card: #ffffff;
+            --text: #0f1720;
+            --muted: #68a07b;
+            --success:  #0b3f23;
+            
+            /* Footer */
+            --footer-bg:  #0b3f23;
+            --footer-darker-bg:  #0b3f23;
+            --footer-text: #e0e0e0;
         }
 
         [data-theme="dark"] {
             /* Warna Dasar Tema Gelap */
-            --bg: #071019;       
-            --card: #071827;     
-            --text: #e6f0f0;     
-            --muted: #9aa6ad;    
-
+            --bg: #071019;
+            --card: #071827;
+            --text: #e6f0f0;
+            --muted: #9aa6ad;
+            --success: #4CAF50;
+            
             /* Primary disesuaikan agar terlihat di latar gelap */
             --primary: #86C16D; 
-            --accent: #F6E4C3;  
-            --success: #4CAF50;
+            --accent: #F6E4C3; 
+            
+            /* Footer Dark Mode */
+            --footer-bg: #153C0C; /* Dibuat lebih gelap */
+            --footer-darker-bg: #0C2B05;
+            --footer-text: #cccccc;
         }
         
         /* Styling Dasar Body & Link */
         html, body {
-            height: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
             background: var(--bg);
             color: var(--text);
             font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
             margin: 0;
             transition: background-color 0.3s, color 0.3s; 
+        }
+        main {
+            flex-grow: 1;
         }
         a {
             color: var(--primary);
@@ -55,38 +69,74 @@
             transition: color 0.2s;
         }
         
+        /* Styling Navbar */
+        .navbar {
+            background-color: var(--card) !important;
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary) !important;
+        }
+        
+        /* Jika Anda menggunakan gambar logo (misal: Lokaterra.png) */
+        .navbar-brand img {
+            height: 35px; 
+            margin-right: 8px;
+        }
+        
         /* Styling Navbar Link */
         .navbar-nav .nav-link {
             color: var(--text) !important;
+            transition: color 0.3s, border-bottom 0.3s;
         }
         .navbar-nav .nav-link.active,
         .navbar-nav .nav-link:hover {
             color: var(--primary) !important;
+            border-bottom: 2px solid var(--primary); 
+            padding-bottom: 5px;
         }
 
+        /* Tombol Theme Toggle */
+        .theme-toggle {
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 50px;
+            background-color: var(--bg); /* Latar belakang disesuaikan dengan BG */
+            border: 1px solid var(--muted);
+            transition: all 0.3s;
+            margin-left: 15px;
+            display: flex;
+            align-items: center;
+            height: 40px; /* Menyesuaikan tinggi agar sejajar */
+        }
+        .theme-toggle:hover {
+            background-color: var(--accent);
+        }
+        
         /* =======================================
            2. STYLE KHUSUS ABOUT.HTML
            ======================================= */
-        .theme-toggle {
-            cursor: pointer;
-            padding: 5px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-            margin-left: 15px;
-        }
-        .theme-toggle:hover {
-            background-color: var(--accent, rgba(148, 191, 167, 0.3));
-        }
         .hero-about {
-            background: linear-gradient(rgba(17, 133, 7, 0.5), rgba(0,0,0,0.5)), url('img/hero-about-bg.jpg') no-repeat center center/cover;
-            min-height: 400px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--muted) 100%);
+            min-height: 350px;
             display: flex;
             align-items: center;
             text-align: center;
+            color: white; 
+            margin-bottom: 0;
         }
-        /* PERBAIKAN FINAL: Memaksa H1 dan P di hero section menjadi putih */
         .hero-about h1, .hero-about p {
             color: white !important; 
+        }
+        
+        .btn-light {
+            background-color: white;
+            color: var(--text) !important;
+            border: none;
         }
         
         .feature-icon {
@@ -101,42 +151,137 @@
             transition: all 0.3s;
             background-color: var(--card); 
             color: var(--text);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
-        .bg-primary-dark {
-            background-color: var(--primary) !important;
+        .value-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
-        .bg-primary-dark * {
-            color: white !important;
+        
+        /* Statistik Box (Jejak Rekam Kami) */
+        .stats-box {
+            background-color: var(--card); 
+            color: var(--text);
+            padding: 30px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            height: 100%; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .stats-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        
+        /* Team Section */
+        .team-card {
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            background-color: var(--card);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            height: 100%;
+        }
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary);
+            border: 5px solid var(--primary);
+        }
+        
+        /* Footer Styling */
+        .lokaterra-footer {
+            background-color: var(--footer-bg); 
+            color: var(--footer-text); 
+            padding-top: 40px; 
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            border-top: 5px solid var(--primary); 
+        }
+
+        .footer-container {
+            display: flex;
+            justify-content: space-around;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 40px; 
+        }
+
+        .footer-col {
+            width: 30%; 
+        }
+        
+        .footer-col h3 {
+            color: #ffffff; 
+            font-weight: 700;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+        }
+        .footer-col ul li a {
+            color: var(--footer-text); 
+            text-decoration: none;
+            display: block;
+            padding: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            .footer-container {
+                flex-direction: column; 
+            }
+            .footer-col {
+                width: 100%; 
+                margin-bottom: 25px;
+            }
         }
     </style>
 </head>
 <body data-theme="light"> 
     
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light shadow-sm" style="background-color: var(--card) !important;">
+        <nav class="navbar navbar-expand-lg navbar-light shadow-sm">
             <div class="container">
-                <a class="navbar-brand fw-bold" href="index.html" style="color: var(--primary) !important; font-size: 1.5rem;">
-                    <i class="bi bi-house-fill"></i> Lokaterra
-                </a>
                 
-                <div class="d-flex align-items-center order-lg-3">
-                    <span id="theme-toggle" class="theme-toggle" title="Ubah Mode">
-                        <i id="theme-icon" class="bi bi-moon-fill" style="color: var(--text);"></i>
-                    </span>
-                    
-                    <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                </div>
+                <a class="navbar-brand" href="index.html">
+                    <img src="img/Desain tanpa judul.png" alt="Lokaterra Logo" height="35"> Lokaterra
+                    </a>
                 
-                <div class="collapse navbar-collapse order-lg-2" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto align-items-center">
                         <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
                         <li class="nav-item"><a class="nav-link" href="properties.html">Properti</a></li>
-                        <li class="nav-item"><a class="nav-link" href="kpr.html">KPR</a></li>
+                        <li class="nav-item"><a class="nav-link" href="kpr.html">Simulasi KPR</a></li>
                         <li class="nav-item"><a class="nav-link" href="wishlist.html">Wishlist</a></li>
-                        <li class="nav-item"><a class="nav-link active fw-bold" aria-current="page" href="about.html">Tentang Kami</a></li>
-                        <li class="nav-item"><a class="nav-link" href="contact.html">Kontak</a></li>
+                        
+                        <li class="nav-item">
+                            <button id="themeToggle" class="btn btn-outline-secondary btn-sm">Dark</button>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -147,11 +292,11 @@
         
         <section class="hero-about d-flex align-items-center">
             <div class="container py-5">
-                <h1 class="display-4 fw-bold">Selamat Datang di Lokaterra</h1> 
+                <h1 class="display-4 fw-bold">Seputar Lokaterra
                 <p class="lead mt-3 w-75 mx-auto">
                     Di Lokaterra, kami percaya bahwa setiap orang berhak menemukan tempat yang bukan hanya indah, tetapi juga nyaman untuk dijalani.
                 </p>
-                <a href="#makna-nama" class="btn btn-lg btn-light mt-4 fw-bold" style="color: var(--text); border-color: var(--text);">Pelajari Kisah Kami</a>
+                <a href="#makna-nama" class="btn btn-lg btn-light mt-4 fw-bold">Pelajari Kisah Kami</a>
             </div>
         </section>
 
@@ -159,7 +304,7 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-5 mb-4 mb-lg-0 text-center">
-                        <i class="bi bi-house-door-fill" style="font-size: 8rem; color: var(--primary);"></i>
+                        <img src="img/Desain tanpa judul.png"alt="Ilustrasi Tentang Lokaterra" class="img-fluid rounded shadow">
                     </div>
                     <div class="col-lg-7">
                         <h2 class="fw-bold" style="color: var(--primary);">Lokaterra: Tanah dan Tempat di Mana Kehidupan Dimulai</h2>
@@ -167,15 +312,14 @@
                             Nama kami lahir dari perpaduan dua kata yang penuh makna: “Loka” (tempat/ruang) dan “Terra” (tanah/bumi). 
                         </p>
                         <p style="color: var(--text);">
-                            Gabungannya melambangkan “tanah dan tempat di mana kehidupan dimulai” — tempat yang bukan sekadar properti, tapi ruang hidup yang nyaman dan bermakna. Lokaterra adalah tentang menemukan tempat yang benar-benar terasa seperti milikmu sendiri.
-                        </p>
-                        <p style="color: var(--text);">
-                            Melalui teknologi cerdas dan tampilan yang elegan, kami hadir untuk memudahkan pencarian ruang yang aman, nyaman, dan bermakna. Lokaterra mempermudah Anda menemukan hunian dan properti terbaik di mana saja.
+                            Gabungannya melambangkan **“tanah dan tempat di mana kehidupan dimulai”** — tempat yang bukan sekadar properti, tapi ruang hidup yang nyaman dan bermakna. Lokaterra adalah tentang menemukan tempat yang benar-benar terasa seperti milikmu sendiri.
                         </p>
                     </div>
                 </div>
             </div>
         </section>
+        
+        <hr class="container" style="color: var(--muted); opacity: 0.3;">
 
         <section class="py-5" style="background-color: var(--bg);">
             <div class="container">
@@ -194,8 +338,36 @@
                             <ul class="list-unstyled mb-0 mt-3">
                                 <li class="d-flex align-items-start mb-2"><i class="bi bi-check-circle-fill me-2 mt-1" style="color: var(--primary);"></i> Menjadi jembatan antara pencari dan penyedia properti dengan kepercayaan dan transparansi.</li>
                                 <li class="d-flex align-items-start mb-2"><i class="bi bi-check-circle-fill me-2 mt-1" style="color: var(--primary);"></i> Menyediakan informasi lengkap dan akurat untuk setiap keputusan pembelian atau sewa.</li>
-                                <li class="d-flex align-items-start"><i class="bi bi-check-circle-fill me-2 mt-1" style="color: var(--primary);"></i> Menghadirkan kenyamanan dan rasa “rumah” sejak pertama kali Anda membuka situs kami.</li>
+                                <li class="d-flex align-items-start"><i class="bi bi-check-circle-fill me-2 mt-1" style="color: var(--primary);"></i> Menghadirkan kenyamanan dan rasa **“rumah”** sejak pertama kali Anda membuka situs kami.</li>
                             </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <hr class="container" style="color: var(--muted); opacity: 0.3;">
+        
+        <section class="py-5" style="background-color: var(--bg);">
+            <div class="container">
+                <h2 class="text-center fw-bold mb-5" style="color: var(--text);">Jejak Rekam Kami</h2>
+                <div class="row text-center g-4">
+                    <div class="col-md-4">
+                        <div class="stats-box h-100">
+                            <div class="stats-number">150+</div>
+                            <p class="text-muted fw-semibold mb-0">Properti Terverifikasi</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stats-box h-100">
+                            <div class="stats-number">250</div>
+                            <p class="text-muted fw-semibold mb-0">Klien Puas & Bertransaksi</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stats-box h-100">
+                            <div class="stats-number">98%</div>
+                            <p class="text-muted fw-semibold mb-0">Tingkat Akurasi Data Properti</p>
                         </div>
                     </div>
                 </div>
@@ -204,12 +376,22 @@
 
         <section class="py-5" style="background-color: var(--bg);">
             <div class="container">
-                <h2 class="text-center fw-bold mb-5" style="color: var(--text);">Nilai Unik Lokaterra</h2>
-                <div class="row text-center g-4">
-                    <div class="col-lg-3 col-md-6"><div class="value-box h-100"><i class="bi bi-geo-alt-fill feature-icon"></i><h4 class="fw-semibold" style="color: var(--primary);">Peta Interaktif</h4><p>Terintegrasi dengan Map View, pengguna bisa langsung melihat lokasi dan lingkungan sekitar properti.</p></div></div>
-                    <div class="col-lg-3 col-md-6"><div class="value-box h-100"><i class="bi bi-robot feature-icon"></i><h4 class="fw-semibold" style="color: var(--primary);">Rekomendasi Cerdas</h4><p>Sistem AI (Smart Match) merekomendasikan properti yang paling sesuai dengan preferensi unik pengguna.</p></div></div>
-                    <div class="col-lg-3 col-md-6"><div class="value-box h-100"><i class="bi bi-chat-dots-fill feature-icon"></i><h4 class="fw-semibold" style="color: var(--primary);">Konsultasi Langsung</h4><p>Pengguna dapat chat dengan agen resmi Lokaterra untuk mendapatkan panduan dan jawaban instan.</p></div></div>
-                    <div class="col-lg-3 col-md-6"><div class="value-box h-100"><i class="bi bi-shield-lock-fill feature-icon"></i><h4 class="fw-semibold" style="color: var(--primary);">Verifikasi Keaslian</h4><p>Setiap listing melewati tahap validasi ketat agar transaksi aman dan terpercaya.</p></div></div>
+                <h2 class="text-center fw-bold mb-5" style="color: var(--text);">Bertemu Tim Pendiri Kami</h2>
+                <div class="row justify-content-center g-4">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="team-card">
+                            <div class="team-avatar"><i class="bi bi-person-fill"></i></div>
+                            <h4 class="fw-semibold">Aghni Akhilla Aul</h4>
+                            <p class="text-muted small">Co-Founder & CEO</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="team-card">
+                            <div class="team-avatar"><i class="bi bi-person-fill"></i></div>
+                            <h4 class="fw-semibold">Ani Difa Sari</h4>
+                            <p class="text-muted small">Co-Founder & CEO</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -224,24 +406,41 @@
 
     </main>
 
-    <footer style="background-color: var(--card); color: var(--text);">
+    <footer class="lokaterra-footer">
+        <div class="container footer-container">
+            <div class="footer-col">
+                <h3>Lokaterra</h3>
+                <p>Platform properti yang menghubungkan Anda dengan tempat di mana kehidupan dimulai, dengan transparan dan cerdas.</p>
+            </div>
+
+            <div class="footer-col">
+                <h3>Navigasi</h3>
+                <ul>
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="properties.html">Properti</a></li>
+                    <li><a href="kpr.html">Simulasi KPR</a></li>
+                    <li><a href="about.html">Tentang Kami</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>Kontak</h3>
+                <p>Email: support@lokaterra.com</p>
+                <p>Telepon: +62 812-xxxx-xxxx</p>
+            </div>
+        </div>
     </footer>
     
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/script.js"></script> 
 
     <script>
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = document.getElementById('theme-icon');
         const body = document.body;
 
-        let currentTheme = 'light';
-
-        // 1. Fungsi untuk mengatur tema
         function setTheme(theme) {
             body.setAttribute('data-theme', theme);
-            currentTheme = theme;
+            localStorage.setItem('theme', theme);
             if (theme === 'dark') {
                 themeIcon.classList.replace('bi-moon-fill', 'bi-sun-fill');
             } else {
@@ -249,15 +448,14 @@
             }
         }
 
-        // 2. Event listener untuk tombol toggle
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
+
         themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             setTheme(newTheme);
         });
-        
-        // 3. Set tema awal ke light 
-        setTheme('light');
     </script>
 </body>
-
 </html>
