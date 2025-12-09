@@ -5,23 +5,33 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Simulasi KPR - Lokaterra</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
+        /* Variabel Warna */
         :root {
             --bg: #f6f7fb;
             --card: #ffffff;
             --text: #0f1720;
             --muted: #6b7280;
-            --primary: #1A4D2E;
-            --accent: #94BFA7;
+            --primary: #1A4D2E; /* Hijau Tua Utama */
+            --accent: #94BFA7; /* Hijau Muda Aksent */
             --success: #22c55e;
             --warning: #f59e0b;
+            --footer-bg: #1a4d2e;
+            --footer-darker-bg: #174228;
+            --footer-text: #e0e0e0;
         }
 
+        /* Dark Mode (Hanya untuk tampilan, karena fungsi toggle dihilangkan) */
         [data-theme="dark"] {
             --bg: #071019;
             --card: #071827;
@@ -29,11 +39,14 @@
             --muted: #9aa6ad;
             --primary: #94BFA7;
             --accent: #1A4D2E;
+            --footer-bg: #1A4D2E; 
+            --footer-darker-bg: #133923;
+            --footer-text: #cccccc;
         }
 
-
+        /* Pengaturan Font dan Warna Dasar */
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
             background: var(--bg);
             color: var(--text);
             margin: 0;
@@ -41,7 +54,7 @@
         }
 
         .navbar {
-            background: var(--card) !important;
+            background: var(--card);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             padding: 1rem 0;
         }
@@ -50,45 +63,6 @@
             font-weight: 700;
             font-size: 1.5rem;
             color: var(--primary);
-        }
-
-        .navbar-nav .nav-link{
-            color: var(--text) !important;
-            font-wight: 500;
-            transition: color 0.2s;
-            margin: 0 0.5rem;
-        }
-
-        .navbar-nav .nav-link:hover,
-        .navbar-nav .nav-link.active{
-            color: var(--primary) !important;
-        }
-
-        .theme-toggle{
-            cursor: pointer;
-            padding: 8px 12px;
-            border-radius: 6px;
-            transition: all 0.3s;
-            background: rgba(75, 142, 59, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--primary);
-            margin-left: auto;
-            margin-right: 0.5rem;
-        }
-
-        .theme-toggle:hover {
-            background: var(--primary);
-        }
-
-        .theme-toggle i {
-            color: var(--text);
-            font-size: 1.2rem;
-        }
-
-        .theme-toggle:hover i {
-            color: white;
         }
 
         .hero-section {
@@ -139,41 +113,6 @@
         .input-group-custom .value-display {
             color: var(--primary);
             font-size: 1.1rem;
-        }
-
-        .slider-container {
-            position: relative;
-            padding: 0.5rem 0;
-        }
-
-        input[type="range"] {
-            width: 100%;
-            height: 8px;
-            border-radius: 5px;
-            background: linear-gradient(to right, var(--primary) 0%, var(--accent) 100%);
-            outline: none;
-            -webkit-appearance: none;
-            appearance: none;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: var(--primary);
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        input[type="range"]::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: var(--primary);
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .result-card {
@@ -228,23 +167,19 @@
             background: var(--accent);
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            color: white;
         }
-
-        .btn-outline-primary {
-            border: 2px solid var(--primary);
-            color: var(--primary);
-            background: transparent;
-            padding: 0.75rem 2rem;
-            border-radius: 10px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-
+        
         .btn-outline-primary:hover {
             background: var(--primary);
             color: white;
         }
 
+        .table thead {
+            background: var(--primary);
+            color: white;
+        }
+        
         .table-responsive {
             border-radius: 12px;
             overflow: hidden;
@@ -254,11 +189,6 @@
         .table {
             margin-bottom: 0;
             color: var(--text);
-        }
-
-        .table thead {
-            background: var(--primary);
-            color: white;
         }
 
         .table tbody tr:hover {
@@ -288,21 +218,7 @@
             height: 300px;
             margin-top: 1rem;
         }
-
-        /* Tambahan style untuk teks muted */
-        .small.text-muted{
-            color: var(--muted) !important;
-        }
-        .card p{
-            color: var(--text) !important;
-        }
-        .text-muted{
-            color: var(--muted) !important;
-        }
-        .card h4, .card h5, .card h6{
-            color: var(--text);
-        }
-
+        
         .badge-custom {
             background: var(--success);
             color: white;
@@ -313,16 +229,7 @@
             margin: 0.25rem;
         }
 
-        @media (max-width: 768px) {
-            .result-card .value {
-                font-size: 1.8rem;
-            }
-
-            .hero-section {
-                padding: 2rem 0;
-            }
-        }
-
+        /* Style tambahan untuk simulasi */
         .input-group-custom label i {
             margin-right: 5px;
             color: var(--primary);
@@ -332,54 +239,118 @@
             color: var(--primary);
         }
 
-        /* tambahan style untuk footer */
-        footer{
-            background: var(--card);
-            border-top: 1px solid rgba(0,0,0,0.1);
-            padding: 2rem 0;
-            margin-top: 3rem;
-            color: var(--text);
+        /* --- STYLE FOOTER BARU --- */
+        .lokaterra-footer {
+            background-color: var(--footer-bg); 
+            color: var(--footer-text); 
+            padding-top: 40px; 
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
         }
-        footer a{
-            color: var(--primary);
+
+        .footer-container {
+            display: flex;
+            justify-content: space-around;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 40px; 
+        }
+
+        .footer-col {
+            width: 30%; 
+        }
+
+        .footer-col h3 {
+            font-size: 1.15em; 
+            margin-bottom: 12px;
+            font-weight: 600; 
+            color: #ffffff; 
+        }
+
+        .footer-col p,
+        .footer-col ul li a {
+            font-size: 1em; 
+            line-height: 1.6;
+            color: var(--footer-text); 
+            font-weight: 400; 
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-col ul li a {
             text-decoration: none;
         }
-        footer a:hover{
-            text-decoration: underline;
+
+        .footer-col ul li a:hover {
+            color: #ffffff;
+        }
+
+        .footer-copyright {
+            text-align: center; 
+            padding: 15px 0;
+            background-color: var(--footer-darker-bg); 
+            font-size: 0.9em;
+            color: #cccccc; 
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Media Query untuk Responsivitas Footer */
+        @media (max-width: 768px) {
+            .footer-container {
+                flex-direction: column; /* Ubah tata letak menjadi vertikal */
+                padding: 0 20px 20px;
+            }
+
+            .footer-col {
+                width: 100%; /* Ambil lebar penuh */
+                margin-bottom: 25px;
+            }
+            
+            .result-card .value {
+                font-size: 1.8rem;
+            }
+
+            .hero-section {
+                padding: 2rem 0;
+            }
         }
     </style>
 </head>
 
-<body>
-
-    <nav class="navbar">
+<body data-theme="light"> 
+    <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="index.html"><i class="fas fa-house-damage"></i> Lokaterra</a>
+            
+            <a class="navbar-brand" href="index.html">
+                <img src="img/Desain tanpa judul.png" alt="Lokaterra Logo" height="42" style="vertical-align: top; margin-right: 8px;"> Lokaterra
+            </a>
 
-            <div class="d-flex align-items-center order-lg-3">
-                <button id="theme-toggle" class="theme-toggle" title="Ubah Mode">
-                    <i id="theme-icon" class="bi bi-moon-fill"></i>
-                </button>
-
-            <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+
             <div class="collapse navbar-collapse" id="navMenu">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item me-2"><a class="nav-link" href="index.html">Beranda</a></li>
                     <li class="nav-item me-2"><a class="nav-link" href="properties.html">Properti</a></li>
-                    <li class="nav-item me-2"><a class="nav-link" href="kpr.html">Simulasi KPR</a></li>
                     <li class="nav-item me-2"><a class="nav-link" href="wishlist.html">Wishlist</a></li>
                     <li class="nav-item me-3"><a class="nav-link" href="about.html">Tentang</a></li>
+                    <li class="nav-item">
+                        <button id="themeToggle" class="btn btn-outline-secondary btn-sm">Dark</button>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
 
+
     <div class="hero-section">
         <div class="container">
-            <h1><i class="fas fa-money-bill-wave"></i> Kalkulator KPR </h1>
+            <h1><i class="fas fa-money-bill-wave"></i> Kalkulator KPR</h1>
             <p>Hitung simulasi cicilan rumah impian Anda dengan mudah dan akurat</p>
         </div>
     </div>
@@ -388,25 +359,37 @@
         <div class="row">
             <div class="col-lg-5">
                 <div class="card">
-                    <h4 class="mb-4"><i class="fas fa-chart-bar"></i> Input Data KPR</h4>
+                    <h4 class="mb-3"><i class="fas fa-chart-bar"></i> Input Data KPR</h4>
+                    <div class="input-group-custom">
+                        <label for="hargaInput">
+                            <span><i class="fas fa-dollar-sign"></i> Harga Rumah (Rp)</span>
+                        </label>
+                        <input type="text" id="hargaInput" class="form-control" value="450.000.000" inputmode="numeric">
+                    </div>
                     
-                    <div class="mb-3">
-                        <label class="form-label"><i class="fas fa-dollar-sign"></i> Harga Properti (Rp)</label>
-                        <input type="number" id="harga" class="form-control" value="450000000" min="0">
+                    <div class="input-group-custom">
+                        <label for="dpInput">
+                            <span><i class="fas fa-credit-card"></i> Uang Muka (DP) (%)</span>
+                        </label>
+                        <input type="number" id="dpInput" class="form-control" value="10" min="0" max="100" step="1">
+                        <div class="small text-muted mt-1" id="dpNominalDisplay">Nominal: Rp 45.000.000</div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label"><i class="fas fa-credit-card"></i> Uang Muka/DP (Rp)</label>
-                        <input type="number" id="dp" class="form-control" value="45000000" min="0">
+                    
+                    <div class="input-group-custom">
+                        <label for="bungaInput">
+                            <span><i class="fas fa-chart-line"></i> Suku Bunga per Tahun (%)</span>
+                        </label>
+                        <input type="number" id="bungaInput" class="form-control" value="7.5" step="0.1" min="0">
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label"><i class="fas fa-chart-line"></i> Suku Bunga (% per tahun)</label>
-                        <input type="number" id="bunga" class="form-control" value="7.5" step="0.1" min="0">
+                    
+                    <div class="input-group-custom">
+                        <label for="tenorInput">
+                            <span><i class="fas fa-clock"></i> Jangka Waktu (Tenor) (Tahun)</span>
+                        </label>
+                        <input type="number" id="tenorInput" class="form-control" value="15" min="1" step="1">
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label"><i class="fas fa-clock"></i> Jangka Waktu/Tenor (tahun)</label>
-                        <input type="number" id="tenor" class="form-control" value="15" min="1">
-                    </div>
-                    <div class="d-grid gap-2 mt-3">
+                    
+                    <div class="d-grid gap-2">
                         <button class="btn btn-primary" id="hitungBtn"><i class="fas fa-calculator"></i> Hitung Cicilan</button>
                         <button class="btn btn-outline-primary" id="saveBtn"><i class="fas fa-save"></i> Simpan Simulasi</button>
                         <button class="btn btn-outline-secondary" id="resetBtn"><i class="fas fa-sync-alt"></i> Reset</button>
@@ -491,286 +474,32 @@
         </div>
     </main>
 
-    <footer>
-    <div class="container">
-        <div class="row">
-        <div class="col-md-4 mb-3">
-          <h5 class="fw-bold">Lokaterra</h5>
-          <p class="small">Platform pencarian properti terpercaya dengan informasi jelas dan akurat.</p>
+    <footer class="lokaterra-footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>Lokaterra</h3>
+                <p>Platform pencarian properti terpercaya dengan informasi jelas dan akurat.</p>
+            </div>
+
+            <div class="footer-col">
+                <h3>Navigasi</h3>
+                <ul>
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="#">Properti</a></li>
+                    <li><a href="kpr.html">Simulasi KPR</a></li>
+                    <li><a href="#">Tentang</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>Kontak</h3>
+                <p>Email: support@lokaterra.com</p>
+                <p>Telepon: +62 812-3456-7890</p>
+            </div>
         </div>
-        <div class="col-md-4 mb-3">
-          <h6 class="fw-semibold">Navigasi</h6>
-          <ul class="list-unstyled small">
-            <li><a href="index.html">Beranda</a></li>
-            <li><a href="properties.html">Properti</a></li>
-            <li><a href="kpr.html">Simulasi KPR</a></li>
-            <li><a href="about.html">Tentang</a></li>
-          </ul>
-        </div>
-        <div class="col-md-4 mb-3">
-          <h6 class="fw-semibold">Kontak</h6>
-          <p class="small mb-1">Email: support@lokaterra.com</p>
-          <p class="small mb-1">Telepon: +62 812-3456-7890</p>
-        </div>
-      </div>
-      <div class="text-center small mt-3">© 2025 Lokaterra</div>
-    </div>
+
+        
     </footer>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        const themeToggle = document.getElementById('theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const body = document.body;
-        
-        let currentTheme = 'Light';
-        
-    // --- Theme Toggle ---
-    function set.Theme(theme) {
-        body.setAttribute('data-theme', theme);
-        currentTheme = theme;
-        
-        if (theme === 'dark') {
-            themeIcon.classlist.replace('bi-moon-fill', 'bi-sun-fill');
-        } else {
-            themeIcon.classlist.replace('bi-moon-fill', 'bi-sun-fill');
-        }
-        // Update chart colors on theme change
-        if (paymentChart) {
-            updateChart(paymentChart.config.data.datasets[0].data[0], paymentChart.config.data.datasets[0].data[1], true);
-        }
-    }
-
-    themeToggle.addEventListener('click', () => {
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-        setTheme(newTheme);
-    });
-
-    setTheme('light');
-
-    // --- Logika KPR ---
-    let kprHistory = [];
-    const formatRp = (num) => 'Rp' + Number(num).toLocalString('id-ID');
-    const getVal = (id) => Number($('#' + id).val()) || 0;
-    let paymentChart;
-        
-    function hitungKPR() {
-        const harga = getVal('harga');
-        const dpNominal = getVal('dp');
-        const bunga = getVal('bunga') / 100;
-        const tenor = getVal('tenor');
-
-        // Validasi dasar
-        if (harga <= 0 || tenor <= 0 || dpNominal >= harga || dpNominal < 0) {
-            $('#cicilanResult').text('Input Error');
-            $('#resultSubtext').text('Input tidak valid: Harga & Tenor > 0, DP < Harga.');
-            $('#pinjamanTotal, #totalBayar, #totalBunga, #lamaCicilan').text('Rp 0');
-            $('#amortTable').html('<tr><td colspan="5" class="text-center text-muted">Input tidak valid</td></tr>');
-            if (paymentChart) paymentChart.destroy();
-            return null;
-        }
-
-        const pinjaman = harga - dpNominal;
-        const bulanTotal = tenor * 12;
-        const bungaBulanan = bunga / 12;
-
-        let cicilan = 0;
-        if (bungaBulanan > 0) {
-            // Rumus Cicilan Anuitas
-            cicilan = pinjaman * bungaBulanan / (1 - Math.pow(1 + bungaBulanan, -bulanTotal));
-        } else {
-            // Jika bunga 0%
-            cicilan = pinjaman / bulanTotal;
-        }
-
-        const totalBayar = cicilan * bulanTotal;
-        const totalBunga = totalBayar - pinjaman;
-
-        // Update Hasil
-        updateResultDisplay(cicilan, pinjaman, totalBayar, totalBunga, bulanTotal);
-        generateAmortization(pinjaman, cicilan, bungaBulanan, bulanTotal);
-        updateChart(pinjaman, totalBunga);
-
-        return { 
-            harga, 
-            dpNominal, 
-            pinjaman, 
-            bunga: getVal('bunga'), 
-            tenor, 
-            cicilan: Math.round(cicilan), 
-            totalBayar: Math.round(totalBayar) 
-        };
-    }
-
-    function updateResultDisplay(cicilan, pinjaman, totalBayar, totalBunga, bulanTotal) {
-        $('#cicilanResult').text(formatRp(Math.round(cicilan)));
-        $('#resultSubtext').text(`Tenor ${Math.round(bulanTotal / 12)} tahun  Bunga ${getVal('bunga').toFixed(1)}%`);
-        $('#pinjamanTotal').text(formatRp(Math.round(pinjaman)));
-        $('#totalBayar').text(formatRp(Math.round(totalBayar)));
-        $('#totalBunga').text(formatRp(Math.round(totalBunga)));
-        $('#lamaCicilan').text(`${bulanTotal} bulan (${Math.round(bulanTotal / 12)} tahun)`);
-    }
-
-    function generateAmortization(pinjaman, cicilan, bungaBulanan, bulanTotal) {
-        let sisaPinjaman = pinjaman;
-        const maxRows = Math.min(12, bulanTotal);
-        let tableBody = '';
-
-        for (let i = 1; i <= maxRows; i++) {
-            const bungaBln = sisaPinjaman * bungaBulanan;
-            const pokokBln = cicilan - bungaBln;
-            sisaPinjaman -= pokokBln;
-
-            tableBody += `
-                <tr>
-                    <td>${i}</td>
-                    <td>${formatRp(Math.round(cicilan))}</td>
-                    <td style="color: var(--warning);">${formatRp(Math.round(bungaBln))}</td>
-                    <td style="color: var(--success);">${formatRp(Math.round(pokokBln))}</td>
-                    <td>${formatRp(Math.round(Math.max(0, sisaPinjaman)))}</td>
-                </tr>
-            `;
-        }
-        $('#amortTable').html(tableBody);
-    }
-
-    function updateChart(pinjamanPokok, totalBunga, isThemeChange = false) {
-        const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
-        const warningColor = getComputedStyle(document.documentElement).getPropertyValue('--warning').trim();
-        const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text').trim();
-
-        if (paymentChart && !isThemeChange) {
-            paymentChart.data.datasets[0].data = [Math.round(pinjamanPokok), Math.round(totalBunga)];
-            paymentChart.update();
-            return;
-        }
-
-        const ctx = document.getElementById('paymentChart').getContext('2d');
-        
-        if (paymentChart) paymentChart.destroy();
-
-        paymentChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Pinjaman Pokok', 'Total Bunga'],
-                datasets: [{
-                    data: [Math.round(pinjamanPokok), Math.round(totalBunga)],
-                    backgroundColor: [
-                        primaryColor, 
-                        warningColor
-                    ],
-                    hoverOffset: 10
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        labels: {
-                            color: textColor
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                label += formatRp(context.raw);
-                                return label;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    // --- Manajemen Riwayat ---
-    function renderHistory() {
-        const $container = $('#historyContainer');
-
-        if (kprHistory.length === 0) {
-            $container.html('<p class="text-muted text-center">Belum ada riwayat simulasi</p>');
-            return;
-        }
-
-        let historyHtml = '';
-        kprHistory.forEach((item, idx) => {
-            const date = new Date(item.date).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
-            historyHtml += `
-                <div class="history-item d-flex justify-content-between align-items-center">
-                    <div>
-                        <strong style="color: var(--primary);">${formatRp(item.harga)}</strong> 
-                        <span class="small text-muted">(${item.tenor} th, ${item.bunga}% Bunga)</span>
-                        <div class="small mt-1">
-                            <span class="fw-bold">Cicilan: ${formatRp(item.cicilan)}</span>
-                            <span class="text-muted"> | Total: ${formatRp(item.totalBayar)}</span>
-                        </div>
-                        <small class="text-muted d-block mt-1">${date}</small>
-                    </div>
-                    <button class="btn btn-sm btn-outline-danger delete-history" data-index="${idx}"><i class="fas fa-trash-alt"></i></button>
-                </div>
-            `;
-        });
-        $container.html(historyHtml);
-    }
-
-    // --- Event Listeners ---
-    $(function() {
-        renderHistory();
-
-        // Hitung
-        $('#hitungBtn').on('click', hitungKPR);
-        $('input').on('keypress', function(e){
-            if(e.which === 13) hitungKPR();
-        });
-
-        // Simpan
-        $('#saveBtn').on('click', function() {
-            const result = hitungKPR();
-            if (!result) return; 
-            kprHistory.unshift(result);
-            if (kprHistory.length > 10) kpHistory = kprHistory.slice(0, 10);
-            renderHistory();
-            alert('Simulasi berhasil disimpan!');
-        });
-
-        // Hapus Item Riwayat
-        $(document).on('click', '.delete-history', function() {
-            if(!confirm('Anda yakin ingin menghapus simulasi ini?')) return;
-            const idx = $(this).data('index');
-            kprHistory.splice(idx, 1)
-            renderHistory();
-        });
-
-        // Hapus Semua Riwayat
-        $('#clearHistory').on('click', function() {
-            if(!confirm('Anda yakin ingin menghapus SEMUA riwayat simulasi?')) return;
-            kprHistory = [];
-            renderHistory();
-        });
-        
-        // Reset Input
-        $('#resetBtn').on('click', function() {
-            $('#harga').val(0);
-            $('#dp').val(0);
-            $('#bunga').val(0);
-            $('#tenor').val(0);
-            $('#cicilanResult').text('Rp 0');
-            $('#resultSubtext').text('Klik "Hitung Cicilan" untuk melihat hasil');
-            $('#pinjamanTotal, #totalBayar, #totalBunga, #lamaCicilan').text('Rp 0');
-            $('#amortTable').html('<tr><td colspan="5" class="text-center text-muted">Belum ada data</td></tr>');
-            if (paymentChart) paymentChart.destroy();
-        });
-
-        // Jalankan perhitungan awal saat halaman dimuat
-        hitungKPR();
-    });
-</script>
 
 </body>
-
 </html>
