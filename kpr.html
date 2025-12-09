@@ -250,6 +250,20 @@
             margin-top: 1rem;
         }
 
+        /* Tambahan style untuk teks muted */
+        .small.text-muted{
+            color: var(--muted) !important;
+        }
+        .card p{
+            color: var(--text) !important;
+        }
+        .text-muted{
+            color: var(--muted) !important;
+        }
+        .card h4, .card h5, .card h6{
+            color: var(--text);
+        }
+
         .badge-custom {
             background: var(--success);
             color: white;
@@ -277,6 +291,22 @@
 
         .info-box i {
             color: var(--primary);
+        }
+
+        /* tambahan style untuk footer */
+        footer{
+            background: var(--card);
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding: 2rem 0;
+            margin-top: 3rem;
+            color: var(--text);
+        }
+        footer a{
+            color: var(--primary);
+            text-decoration: none;
+        }
+        footer a:hover{
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -419,34 +449,55 @@
         </div>
     </main>
 
+    <footer>
+    <div class="container">
+        <div class="row">
+        <div class="col-md-4 mb-3">
+          <h5 class="fw-bold">Lokaterra</h5>
+          <p class="small">Platform pencarian properti terpercaya dengan informasi jelas dan akurat.</p>
+        </div>
+        <div class="col-md-4 mb-3">
+          <h6 class="fw-semibold">Navigasi</h6>
+          <ul class="list-unstyled small">
+            <li><a href="index.html">Beranda</a></li>
+            <li><a href="properties.html">Properti</a></li>
+            <li><a href="kpr.html">Simulasi KPR</a></li>
+            <li><a href="about.html">Tentang</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 mb-3">
+          <h6 class="fw-semibold">Kontak</h6>
+          <p class="small mb-1">Email: support@lokaterra.com</p>
+          <p class="small mb-1">Telepon: +62 812-3456-7890</p>
+        </div>
+      </div>
+      <div class="text-center small mt-3">© 2025 Lokaterra</div>
+    </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        let kprHistory = [];
+        let currentTheme = 'Light';
+        
         const formatRp = (num) => 'Rp ' + Number(num).toLocaleString('id-ID');
     const getVal = (id) => Number($('#' + id).val());
     let paymentChart; // Variabel global untuk Chart.js
 
     // --- Theme Toggle ---
     const themeToggle = $('#themeToggle');
-    const savedTheme = localStorage.getItem('theme');
     const updateThemeToggleText = (theme) => {
         themeToggle.html(theme === 'dark' ? '<i class="fas fa-sun"></i> Light Mode' : '🌙 Dark Mode');
     };
 
-    if (savedTheme === 'dark') {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        updateThemeToggleText('dark');
-    } else {
-        updateThemeToggleText('light');
-    }
-
     themeToggle.on('click', function() {
-        const current = document.documentElement.getAttribute('data-theme');
-        if (current === 'dark') {
+        if (currentTheme === 'dark') {
             document.documentElement.removeAttribute('data-theme');
-            localStorage.setItem('theme', 'light');
+            currentTheme = 'light';
             updateThemeToggleText('light');
         } else {
             document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.setItem('theme', 'dark');
+            currentTheme = 'dark';
             updateThemeToggleText('dark');
         }
         // Update chart colors on theme change
@@ -506,8 +557,7 @@
 
     function updateResultDisplay(cicilan, pinjaman, totalBayar, totalBunga, bulanTotal) {
         $('#cicilanResult').text(formatRp(Math.round(cicilan)));
-        $('#resultSubtext').text(`Tenor ${Math.round(bulanTotal / 12)} tahun | Bunga ${getVal('bunga').toFixed(1)}%`);
-        
+        $('#resultSubtext').text(`Tenor ${Math.round(bulanTotal / 12)} tahun  Bunga ${getVal('bunga').toFixed(1)}%`);
         $('#pinjamanTotal').text(formatRp(Math.round(pinjaman)));
         $('#totalBayar').text(formatRp(Math.round(totalBayar)));
         $('#totalBunga').text(formatRp(Math.round(totalBunga)));
@@ -593,16 +643,15 @@
 
     // --- Manajemen Riwayat ---
     function renderHistory() {
-        const history = JSON.parse(localStorage.getItem('kprHistory') || '[]');
         const $container = $('#historyContainer');
 
-        if (history.length === 0) {
+        if (kprHistory.length === 0) {
             $container.html('<p class="text-muted text-center">Belum ada riwayat simulasi</p>');
             return;
         }
 
         let historyHtml = '';
-        history.forEach((item, idx) => {
+        kprHistory.forEach((item, idx) => {
             const date = new Date(item.date).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
             historyHtml += `
                 <div class="history-item d-flex justify-content-between align-items-center">
@@ -636,15 +685,8 @@
         $('#saveBtn').on('click', function() {
             const result = hitungKPR();
             if (!result) return; 
-
-            let history = JSON.parse(localStorage.getItem('kprHistory') || '[]');
-            history.unshift({
-                date: new Date().toISOString(),
-                ...result
-            });
-            if (history.length > 10) history = history.slice(0, 10);
-            
-            localStorage.setItem('kprHistory', JSON.stringify(history));
+            kprHistory.unshift(result);
+            if (kprHistory.length > 10) kpHistory = kprHistory.slice(0, 10);
             renderHistory();
             alert('Simulasi berhasil disimpan!');
         });
@@ -653,16 +695,14 @@
         $(document).on('click', '.delete-history', function() {
             if(!confirm('Anda yakin ingin menghapus simulasi ini?')) return;
             const idx = $(this).data('index');
-            let history = JSON.parse(localStorage.getItem('kprHistory') || '[]');
-            history.splice(idx, 1);
-            localStorage.setItem('kprHistory', JSON.stringify(history));
+            kprHistory.splice(idx, 1)
             renderHistory();
         });
 
         // Hapus Semua Riwayat
         $('#clearHistory').on('click', function() {
             if(!confirm('Anda yakin ingin menghapus SEMUA riwayat simulasi?')) return;
-            localStorage.removeItem('kprHistory');
+            kprHistory = [];
             renderHistory();
         });
         
@@ -683,32 +723,6 @@
         hitungKPR();
     });
 </script>
-
-    <footer>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4 mb-3">
-          <h5 class="fw-bold">Lokaterra</h5>
-          <p class="small">Platform pencarian properti terpercaya dengan informasi jelas dan akurat.</p>
-        </div>
-        <div class="col-md-4 mb-3">
-          <h6 class="fw-semibold">Navigasi</h6>
-          <ul class="list-unstyled small">
-            <li><a href="index.html">Beranda</a></li>
-            <li><a href="properties.html">Properti</a></li>
-            <li><a href="kpr.html">Simulasi KPR</a></li>
-            <li><a href="about.html">Tentang</a></li>
-          </ul>
-        </div>
-        <div class="col-md-4 mb-3">
-          <h6 class="fw-semibold">Kontak</h6>
-          <p class="small mb-1">Email: support@lokaterra.com</p>
-          <p class="small mb-1">Telepon: +62 812-3456-7890</p>
-        </div>
-      </div>
-      <div class="text-center small mt-3">© 2025 Lokaterra</div>
-    </div>
-  </footer>
 
 </body>
 
