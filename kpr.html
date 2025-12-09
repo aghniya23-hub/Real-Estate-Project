@@ -316,37 +316,25 @@
         <div class="row">
             <div class="col-lg-5">
                 <div class="card">
-                    <h4 class="mb-3"><i class="fas fa-chart-bar"></i> Input Data KPR</h4>
-                    <div class="input-group-custom">
-                        <label for="hargaInput">
-                            <span><i class="fas fa-dollar-sign"></i> Harga Rumah (Rp)</span>
-                        </label>
-                        <input type="text" id="hargaInput" class="form-control" value="450.000.000" inputmode="numeric">
-                    </div>
+                    <h4 class="mb-4"><i class="fas fa-chart-bar"></i> Input Data KPR</h4>
                     
-                    <div class="input-group-custom">
-                        <label for="dpInput">
-                            <span><i class="fas fa-credit-card"></i> Uang Muka (DP) (%)</span>
-                        </label>
-                        <input type="number" id="dpInput" class="form-control" value="10" min="0" max="100" step="1">
-                        <div class="small text-muted mt-1" id="dpNominalDisplay">Nominal: Rp 45.000.000</div>
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fas fa-dollar-sign"></i> Harga Properti (Rp)</label>
+                        <input type="number" id="harga" class="form-control" value="450000000" min="0">
                     </div>
-                    
-                    <div class="input-group-custom">
-                        <label for="bungaInput">
-                            <span><i class="fas fa-chart-line"></i> Suku Bunga per Tahun (%)</span>
-                        </label>
-                        <input type="number" id="bungaInput" class="form-control" value="7.5" step="0.1" min="0">
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fas fa-credit-card"></i> Uang Muka/DP (Rp)</label>
+                        <input type="number" id="dp" class="form-control" value="45000000" min="0">
                     </div>
-                    
-                    <div class="input-group-custom">
-                        <label for="tenorInput">
-                            <span><i class="fas fa-clock"></i> Jangka Waktu (Tenor) (Tahun)</span>
-                        </label>
-                        <input type="number" id="tenorInput" class="form-control" value="15" min="1" step="1">
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fas fa-chart-line"></i> Suku Bunga (% per tahun)</label>
+                        <input type="number" id="bunga" class="form-control" value="7.5" step="0.1" min="0">
                     </div>
-                    
-                    <div class="d-grid gap-2">
+                    <div class="mb-3">
+                        <label class="form-label"><i class="fas fa-clock"></i> Jangka Waktu/Tenor (tahun)</label>
+                        <input type="number" id="tenor" class="form-control" value="15" min="1">
+                    </div>
+                    <div class="d-grid gap-2 mt-3">
                         <button class="btn btn-primary" id="hitungBtn"><i class="fas fa-calculator"></i> Hitung Cicilan</button>
                         <button class="btn btn-outline-primary" id="saveBtn"><i class="fas fa-save"></i> Simpan Simulasi</button>
                         <button class="btn btn-outline-secondary" id="resetBtn"><i class="fas fa-sync-alt"></i> Reset</button>
