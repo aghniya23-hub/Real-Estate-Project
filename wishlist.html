@@ -1,29 +1,303 @@
-
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Wishlist - Rumah Jelas</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Wishlist Properti</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+
+    <style>
+        /* Variabel Warna Rumah Jelas (SESUAI DENGAN PERMINTAAN ANDA) */
+        :root {
+            --bg: #f6f7fb;
+            --card: #ffffff;
+            --text: #0f1720;
+            --muted: #6b7280;
+            --primary: #0b3f23;
+            --accent:#94BFA7;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --footer-bg: #0b3f23;
+            --footer-darker-bg: #0b3f23;
+            --footer-text: #e0e0e0;
+        }
+
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --bg: #071019;
+            --card: #071827;
+            --text: #e6f0f0;
+            --muted: #9aa6ad;
+            --primary: #8BC342; 
+            --accent: #33B043;
+            --footer-bg: #33B043; 
+            --footer-darker-bg: #298F35;
+            --footer-text: #cccccc;
+        }
+
+        /* Pengaturan Font dan Warna Dasar */
+        body {
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: var(--card);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+            display: flex; 
+            align-items: center; 
+        }
+        
+        .navbar-brand img {
+            vertical-align: middle; 
+            margin-right: 8px;
+        }
+        
+        .nav-link {
+            color: var(--text) !important;
+        }
+        
+        .nav-link.active {
+            font-weight: 600;
+            color: var(--primary) !important;
+            border-bottom: 2px solid var(--primary); 
+            padding-bottom: 5px;
+        }
+
+        /* Hero Section - Menggunakan Gradien Hijau Baru */
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            padding: 2.5rem 0;
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero-section h1 {
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 0;
+        }
+        
+        /* Card Styles */
+        .card {
+            background: var(--card);
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Placeholder Item Wishlist Styling */
+        .wishlist-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid var(--bg);
+        }
+        
+        .wishlist-item:last-child {
+            border-bottom: none;
+        }
+        
+        .wishlist-img {
+            width: 120px;
+            height: 90px;
+            background: var(--muted);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .btn-remove {
+            color: #dc3545; /* Bootstrap danger */
+            border: none;
+            background: transparent;
+            font-size: 1.1rem;
+        }
+
+        /* Empty State */
+        .empty-wishlist {
+            text-align: center;
+            padding: 4rem 0;
+            color: var(--muted);
+        }
+        
+        .empty-wishlist i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        /* Footer Styles */
+        .lokaterra-footer {
+            background-color: var(--footer-bg); 
+            color: var(--footer-text); 
+            padding-top: 40px; 
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+        }
+
+        .footer-container {
+            display: flex;
+            justify-content: space-around;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 40px; 
+        }
+
+        .footer-col {
+            width: 30%; 
+        }
+
+        .footer-col h3 {
+            color: #ffffff; 
+        }
+
+        .footer-col ul li a {
+            color: var(--footer-text); 
+            text-decoration: none;
+        }
+
+        /* Media Query for Footer Responsiveness */
+        @media (max-width: 768px) {
+            .footer-container {
+                flex-direction: column; 
+            }
+            .footer-col {
+                width: 100%; 
+                margin-bottom: 25px;
+            }
+            .wishlist-item {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .wishlist-img {
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
 </head>
-<body>
-<nav class="navbar navbar-expand-lg" id="mainNavbar">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="index.html">Rumah Jelas</a>
-  </div>
-</nav>
 
-<main class="py-5">
-  <div class="container">
-    <h3>Wishlist Anda</h3>
-    <div class="row" id="wishlist-container"></div>
-  </div>
-</main>
+<body data-theme="light"> 
+    
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="img/Desain tanpa judul.png" alt="Rumah Jelas Logo" height="35"> Rumah Jelas
+            </a>
 
-<script src="js/wishlist.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item me-2"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item me-2"><a class="nav-link" href="properties.html">Properti</a></li>
+                    <li class="nav-item me-2"><a class="nav-link" href="kpr.html">Simulasi KPR</a></li>
+                    <li class="nav-item me-3"><a class="nav-link" href="about.html">Tentang</a></li>
+                    <li class="nav-item">
+                        <button id="themeToggle" class="btn btn-outline-secondary btn-sm">Dark</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="hero-section">
+        <div class="container">
+            <h1><i class="fas fa-heart"></i> Daftar Properti Impian Anda</h1>
+        </div>
+    </div>
+
+    <main class="container pb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card p-0">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 text-dark">Properti Tersimpan (1 Item)</h5>
+
+                        <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash-alt"></i> Hapus Semua</button>
+                    </div>
+
+                    <div id="wishlistContainer">
+                        
+                        <div class="wishlist-item d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <div class="wishlist-img"><img src="img/rumah.jpeg" alt=" Tentang Lokaterra" class="img-fluid rounded shadow">
+                                </div>
+                                <div class="ms-3">
+                                    <h6 class="mb-1 fw-bold">Cluster Hijau Family</h6>
+                                    <p class="mb-0 small text-muted"><i class="fas fa-map-marker-alt"></i> Karanganyar</p>
+                                    <p class="mb-0 fw-bold text-success">Rp 850.000.000</p>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-outline-primary me-2">Ajukan Pembelian</button>
+                                <button class="btn-remove" title="Hapus dari Wishlist"><i class="fas fa-times-circle"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="wishlist-item d-flex justify-content-between align-items-center">
+          
+                 
+                        </div>
+                        
+                        </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="lokaterra-footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>Rumah Jelas</h3>
+                <p>Platform pencarian properti terpercaya dengan informasi jelas dan akurat.</p>
+            </div>
+
+            <div class="footer-col">
+                <h3>Navigasi</h3>
+                <ul>
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="properties.html">Properti</a></li>
+                    <li><a href="kpr.html">Simulasi KPR</a></li>
+                    <li><a href="about.html">Tentang</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>Kontak</h3>
+                <p>Email: support@rumahjelas.com</p>
+                <p>Telepon: +62 812-3456-7890</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    </body>
 </html>
