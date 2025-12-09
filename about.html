@@ -236,10 +236,12 @@
         const themeIcon = document.getElementById('theme-icon');
         const body = document.body;
 
+        let currentTheme = 'light';
+
         // 1. Fungsi untuk mengatur tema
         function setTheme(theme) {
             body.setAttribute('data-theme', theme);
-            localStorage.setItem('theme', theme);
+            currentTheme = theme;
             if (theme === 'dark') {
                 themeIcon.classList.replace('bi-moon-fill', 'bi-sun-fill');
             } else {
@@ -247,16 +249,15 @@
             }
         }
 
-        // 2. Cek tema tersimpan saat halaman dimuat
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        setTheme(savedTheme);
-
-        // 3. Event listener untuk tombol toggle
+        // 2. Event listener untuk tombol toggle
         themeToggle.addEventListener('click', () => {
-            const currentTheme = body.getAttribute('data-theme');
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             setTheme(newTheme);
         });
+        
+        // 3. Set tema awal ke light 
+        setTheme('light');
     </script>
 </body>
+
 </html>
