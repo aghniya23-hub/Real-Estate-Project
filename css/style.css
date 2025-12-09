@@ -1,9 +1,5 @@
-/* ===========================
-   Rumah Jelas — style.css
-   Redesigned by Mas Al (for Aghni)
-   Paste this whole file to replace your old style.css
-   =========================== */
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 /* ---------- Root variables ---------- */
 :root{
   --bg: #f6f7fb;
@@ -31,6 +27,47 @@
   --muted: #9aa6ad;
   --glass: rgba(10,18,22,0.45);
 }
+
+
+
+/* ======================================= */
+/* FIX: VISIBILITAS TEKS DI DARK MODE */
+/* ======================================= */
+
+/* Memastikan elemen teks menggunakan warna terang di Dark Mode */
+[data-theme="dark"] h1, 
+[data-theme="dark"] h2, 
+[data-theme="dark"] h3, 
+[data-theme="dark"] h4, 
+[data-theme="dark"] h5 {
+    color: var(--text); /* Menggunakan variabel --text (putih terang) */
+}
+[data-theme="dark"] p,
+[data-theme="dark"] label,
+[data-theme="dark"] small,
+[data-theme="dark"] span {
+    color: var(--text) !important;
+}
+
+/* Link */
+[data-theme="dark"] a {
+    color: var(--text); 
+}
+[data-theme="dark"] a:hover {
+    color: var(--muted);
+}
+
+/* Input Form Control */
+[data-theme="dark"] .form-control, 
+[data-theme="dark"] .form-select {
+    color: var(--text); 
+    background-color: var(--card); /* background card gelap */
+    border-color: var(--muted);
+}
+[data-theme="dark"] .form-control::placeholder {
+    color: var(--muted); 
+}
+
 
 /* ---------- Base ---------- */
 *{box-sizing:border-box}
@@ -82,7 +119,20 @@ body{
   padding: .5rem .6rem;
   transition: color .18s ease;
 }
+
+/* Tambahkan CSS ini di dalam tag <style> */
+.navbar-brand img, .navbar-logo {
+    vertical-align: middle; 
+}
 .navbar .nav-link:hover{ color: var(--primary-700); }
+/* FIX: Warna link navbar di Dark Mode */
+[data-theme="dark"] .navbar .nav-link {
+    color: var(--muted); 
+}
+[data-theme="dark"] .navbar .nav-link:hover { 
+    color: var(--text);
+}
+
 
 /* Navbar toggler icon (ensure visibility) */
 .navbar-toggler { border: none; background: transparent; }
@@ -122,6 +172,28 @@ body{
   text-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
+
+
+/* Hero Section */
+        .hero h1 {
+            font-weight: 700;
+        }
+        
+        /* Search Card (Side Component) */
+        .search-card {
+            background: var(--card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            color: var(--text);
+            margin-top: 2rem; /* Jarak atas di HP */
+        }
+        @media (min-width: 992px) {
+            .search-card {
+                margin-top: 0;
+            }
+        }
+
 /* hero buttons */
 .hero .btn {
   border-radius: 10px;
@@ -141,6 +213,8 @@ body{
   border: 1.5px solid rgba(255,255,255,0.15);
 }
 .hero .btn-outline-light:hover { background: rgba(255,255,255,0.06); }
+
+
 
 /* ---------- Search Card (floating) ---------- */
 .search-card{
@@ -318,4 +392,86 @@ a:focus, button:focus, .form-control:focus { outline: none; box-shadow: 0 6px 20
   border: 1px solid rgba(255,255,255,0.03);
 }
 
-/* ---------- End of file ---------- */
+/* --- Penyesuaian Warna Putih Permanen di Hero --- */
+/* Menimpa h1/p di Light Mode agar tetap putih di Hero */
+.hero h1, 
+.hero p,
+.hero .lead,
+.hero .btn-outline-light {
+  color: #ffffff !important; 
+}
+
+.lokaterra-footer {
+    background-color: #1a4d2e; 
+    color: #e0e0e0; 
+    padding-top: 40px;
+    /* Menggunakan Font Poppins */
+    font-family: 'Poppins', sans-serif; 
+    font-size: 15px;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-around;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 40px;
+}
+
+.footer-col {
+    width: 30%;
+    padding-right: 20px; 
+}
+
+.footer-col h3 {
+    font-size: 1.15em; 
+    margin-bottom: 12px;
+    font-weight: 600; /* Font Poppins menggunakan 600 untuk semi-bold */
+    color: #ffffff; 
+}
+
+.footer-col p,
+.footer-col ul li a {
+    font-size: 1em; 
+    line-height: 1.6;
+    color: #e0e0e0; 
+    font-weight: 400; /* Font Poppins reguler */
+}
+
+/* Styling untuk Navigasi */
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-col ul li {
+    margin-bottom: 3px;
+}
+
+.footer-col ul li a {
+    text-decoration: none;
+    display: block; 
+    transition: color 0.3s;
+}
+
+.footer-col ul li a:hover {
+    color: #ffffff;
+}
+
+/* Styling untuk Copyright */
+.footer-copyright {
+    text-align: center;
+    padding: 15px 0;
+    background-color: #174228;
+    font-size: 0.9em; 
+    color: #cccccc; 
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-col a {
+    color: #e0e0e0;
+    text-decoration: none;
+}
+
+
