@@ -25,11 +25,15 @@
 
 /* Dark theme overrides */
 [data-theme="dark"]{
-  --bg: #071019;
-  --card: #071827;
-  --text: #e6f0f0;
-  --muted: #9aa6ad;
-  --glass: rgba(10,18,22,0.45);
+  --bg: #0b121a;
+  --card: #0e1a25;
+  --text: #f5faff;        /* putih biru muda — paling aman */
+  --muted: #b7c4cc;      /* abu terang */
+  --primary-900: #2dd4bf;
+  --primary-700: #4ade80;
+  --primary-500: #86efac;
+  --accent: #5eead4;
+  --glass: rgba(20,32,42,0.55);
 }
 
 /* ---------- Base ---------- */
