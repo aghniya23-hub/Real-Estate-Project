@@ -79,14 +79,11 @@ real-estate-project/
 ---
 
 ## 👥 Anggota Kelompok
-| No | Nama | Tugas |
-|----|------|--------|
-| 1 | (isi nama) | Frontend: index.html, navbar, hero section |
-| 2 | (isi nama) | Properties page + featured layout |
-| 3 | (isi nama) | JavaScript filter, sorting, wishlist |
-| 4 | (isi nama) | detail.html + wishlist.html |
-| 5 | (isi nama) | Simulasi KPR + about.html + dokumentasi |
-
+1. color pallete u/ di cas, logo, gambar rumah sesuai ketentuan (aul) 
+2. ⁠footer dan wishlist (akhilla) 
+3. ⁠kpr (ani) 
+4. ⁠about (difa) 
+5. ⁠database dan perapian akhir (aghni)
 > Sesuaikan tabel dengan pembagian tugas kelompokmu.
 
 ---
@@ -145,16 +142,3 @@ real-estate-project/
 
 (Tambahkan screenshot halaman-halaman proyek setelah selesai)
 
----
-
-## 📝 Lisensi
-
-Project dibuat untuk keperluan tugas akademik.
-Tidak untuk penggunaan komersial.
-
----
-
-## ✨ Dibuat oleh
-
-Kelompok Web Programming — 2025
-"Semoga Dosen Sayang Kita Semua ❤️"
