@@ -502,13 +502,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // ===== PENGGANTIAN localStorage dengan variabel global =====
         let kprHistory = [];
         let currentTheme = 'light';
-
-        const formatRp = (num) => 'Rp ' + Number(num).toLocaleString('id-ID');
-        const getVal = (id) => Number($('#' + id).val()) || 0;
-        let paymentChart;
 
         // --- Theme Toggle (tanpa localStorage) ---
         const themeToggle = $('#themeToggle');
@@ -532,155 +527,153 @@
         });
 
         // --- Logika KPR ---
-    function hitungKPR() {
-        const harga = getVal('harga');
-        const dpNominal = getVal('dp');
-        const bunga = getVal('bunga') / 100;
-        const tenor = getVal('tenor');
-
-        // Validasi dasar
-        if (harga <= 0 || tenor <= 0 || dpNominal >= harga || dpNominal < 0) {
-            $('#cicilanResult').text('Input Error');
-            $('#resultSubtext').text('Input tidak valid: Harga & Tenor > 0, DP < Harga.');
-            $('#pinjamanTotal, #totalBayar, #totalBunga, #lamaCicilan').text('Rp 0');
-            $('#amortTable').html('<tr><td colspan="5" class="text-center text-muted">Input tidak valid</td></tr>');
-            if (paymentChart) paymentChart.destroy();
-            return null;
-        }
-
-        const pinjaman = harga - dpNominal;
-        const bulanTotal = tenor * 12;
-        const bungaBulanan = bunga / 12;
-
-        let cicilan = 0;
-        if (bungaBulanan > 0) {
-            // Rumus Cicilan Anuitas
-            cicilan = pinjaman * bungaBulanan / (1 - Math.pow(1 + bungaBulanan, -bulanTotal));
-        } else {
+        function hitungKPR() {
+            const harga = getVal('harga');
+            const dpNominal = getVal('dp');
+            const bunga = getVal('bunga') / 100;
+            const tenor = getVal('tenor');
+            
+            if (harga <= 0 || tenor <= 0 || dpNominal >= harga || dpNominal < 0) {
+                $('#cicilanResult').text('Input Error');
+                $('#resultSubtext').text('Input tidak valid: Harga & Tenor > 0, DP < Harga.');
+                $('#pinjamanTotal, #totalBayar, #totalBunga, #lamaCicilan').text('Rp 0');
+                $('#amortTable').html('<tr><td colspan="5" class="text-center text-muted">Input tidak valid</td></tr>');
+                if (paymentChart) paymentChart.destroy();
+                return null;
+            }
+            
+            const pinjaman = harga - dpNominal;
+            const bulanTotal = tenor * 12;
+            const bungaBulanan = bunga / 12;
+            
+            let cicilan = 0;
+            if (bungaBulanan > 0) {
+                 // Rumus Cicilan Anuitas
+                cicilan = pinjaman * bungaBulanan / (1 - Math.pow(1 + bungaBulanan, -bulanTotal));
+            } else {
             // Jika bunga 0%
-            cicilan = pinjaman / bulanTotal;
+                cicilan = pinjaman / bulanTotal;
+            }
+
+            const totalBayar = cicilan * bulanTotal;
+            const totalBunga = totalBayar - pinjaman;
+
+            // Update Hasil
+            updateResultDisplay(cicilan, pinjaman, totalBayar, totalBunga, bulanTotal);
+            generateAmortization(pinjaman, cicilan, bungaBulanan, bulanTotal);
+            updateChart(pinjaman, totalBunga);
+            
+            return { 
+                harga, 
+                dpNominal, 
+                pinjaman, 
+                bunga: getVal('bunga'), 
+                tenor, 
+                cicilan: Math.round(cicilan), 
+                totalBayar: Math.round(totalBayar) 
+            };
+        }
+        
+        function updateResultDisplay(cicilan, pinjaman, totalBayar, totalBunga, bulanTotal) {
+            $('#cicilanResult').text(formatRp(Math.round(cicilan)));
+            $('#resultSubtext').text(`Tenor ${Math.round(bulanTotal / 12)} tahun | Bunga ${getVal('bunga').toFixed(1)}%`);
+            $('#pinjamanTotal').text(formatRp(Math.round(pinjaman)));
+            $('#totalBayar').text(formatRp(Math.round(totalBayar)));
+            $('#totalBunga').text(formatRp(Math.round(totalBunga)));
+            $('#lamaCicilan').text(`${bulanTotal} bulan (${Math.round(bulanTotal / 12)} tahun)`);
         }
 
-        const totalBayar = cicilan * bulanTotal;
-        const totalBunga = totalBayar - pinjaman;
-
-        // Update Hasil
-        updateResultDisplay(cicilan, pinjaman, totalBayar, totalBunga, bulanTotal);
-        generateAmortization(pinjaman, cicilan, bungaBulanan, bulanTotal);
-        updateChart(pinjaman, totalBunga);
-
-        return { 
-            harga, 
-            dpNominal, 
-            pinjaman, 
-            bunga: getVal('bunga'), 
-            tenor, 
-            cicilan: Math.round(cicilan), 
-            totalBayar: Math.round(totalBayar) 
-        };
-    }
-
-    function updateResultDisplay(cicilan, pinjaman, totalBayar, totalBunga, bulanTotal) {
-        $('#cicilanResult').text(formatRp(Math.round(cicilan)));
-        $('#resultSubtext').text(`Tenor ${Math.round(bulanTotal / 12)} tahun | Bunga ${getVal('bunga').toFixed(1)}%`);
-        
-        $('#pinjamanTotal').text(formatRp(Math.round(pinjaman)));
-        $('#totalBayar').text(formatRp(Math.round(totalBayar)));
-        $('#totalBunga').text(formatRp(Math.round(totalBunga)));
-        $('#lamaCicilan').text(`${bulanTotal} bulan (${Math.round(bulanTotal / 12)} tahun)`);
-    }
-
-    function generateAmortization(pinjaman, cicilan, bungaBulanan, bulanTotal) {
-        let sisaPinjaman = pinjaman;
-        const maxRows = Math.min(12, bulanTotal);
-        let tableBody = '';
-
-        for (let i = 1; i <= maxRows; i++) {
-            const bungaBln = sisaPinjaman * bungaBulanan;
-            const pokokBln = cicilan - bungaBln;
-            sisaPinjaman -= pokokBln;
-
-            tableBody += `
+        function generateAmortization(pinjaman, cicilan, bungaBulanan, bulanTotal) {
+            let sisaPinjaman = pinjaman;
+            const maxRows = Math.min(12, bulanTotal);
+            let tableBody = '';
+            
+            for (let i = 1; i <= maxRows; i++) {
+                const bungaBln = sisaPinjaman * bungaBulanan;
+                const pokokBln = cicilan - bungaBln;
+                sisaPinjaman -= pokokBln;
+                
+                tableBody += `
                 <tr>
-                    <td>${i}</td>
-                    <td>${formatRp(Math.round(cicilan))}</td>
-                    <td style="color: var(--warning);">${formatRp(Math.round(bungaBln))}</td>
-                    <td style="color: var(--success);">${formatRp(Math.round(pokokBln))}</td>
-                    <td>${formatRp(Math.round(Math.max(0, sisaPinjaman)))}</td>
+                <td>${i}</td>
+                <td>${formatRp(Math.round(cicilan))}</td>
+                <td style="color: var(--warning);">${formatRp(Math.round(bungaBln))}</td>
+                <td style="color: var(--success);">${formatRp(Math.round(pokokBln))}</td>
+                <td>${formatRp(Math.round(Math.max(0, sisaPinjaman)))}</td>
                 </tr>
             `;
         }
         $('#amortTable').html(tableBody);
-    }
-
-    function updateChart(pinjamanPokok, totalBunga, isThemeChange = false) {
-        const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
-        const warningColor = getComputedStyle(document.documentElement).getPropertyValue('--warning').trim();
-        const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text').trim();
-
-        if (paymentChart && !isThemeChange) {
-            paymentChart.data.datasets[0].data = [Math.round(pinjamanPokok), Math.round(totalBunga)];
-            paymentChart.update();
-            return;
         }
-
-        const ctx = document.getElementById('paymentChart').getContext('2d');
         
-        if (paymentChart) paymentChart.destroy();
-
-        paymentChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Pinjaman Pokok', 'Total Bunga'],
-                datasets: [{
-                    data: [Math.round(pinjamanPokok), Math.round(totalBunga)],
-                    backgroundColor: [
-                        primaryColor, 
-                        warningColor
-                    ],
-                    hoverOffset: 10
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        labels: {
+        function updateChart(pinjamanPokok, totalBunga, isThemeChange = false) {
+            const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+            const warningColor = getComputedStyle(document.documentElement).getPropertyValue('--warning').trim();
+            const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text').trim();
+            
+            if (paymentChart && !isThemeChange) {
+                paymentChart.data.datasets[0].data = [Math.round(pinjamanPokok), Math.round(totalBunga)];
+                paymentChart.update();
+                return;
+            }
+            
+            const ctx = document.getElementById('paymentChart').getContext('2d');
+            
+            if (paymentChart) paymentChart.destroy();
+            
+            paymentChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Pinjaman Pokok', 'Total Bunga'],
+                    datasets: [{
+                        data: [Math.round(pinjamanPokok), Math.round(totalBunga)],
+                        backgroundColor: [
+                            primaryColor, 
+                            warningColor
+                        ],
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
                             color: textColor
-                        }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                let label = context.label || '';
-                                if (label) {
-                                    label += ': ';
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += formatRp(context.raw);
+                                    return label;
                                 }
-                                label += formatRp(context.raw);
-                                return label;
                             }
                         }
                     }
                 }
-            }
-        });
-    }
-
-    // --- Manajemen Riwayat ---
-    function renderHistory() {
-        const history = JSON.parse(localStorage.getItem('kprHistory') || '[]');
-        const $container = $('#historyContainer');
-
-        if (history.length === 0) {
-            $container.html('<p class="text-muted text-center">Belum ada riwayat simulasi</p>');
-            return;
+            });
         }
 
-        let historyHtml = '';
-        history.forEach((item, idx) => {
-            const date = new Date(item.date).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
-            historyHtml += `
+        // --- Manajemen Riwayat ---
+        function renderHistory() {
+            const history = JSON.parse(localStorage.getItem('kprHistory') || '[]');
+            const $container = $('#historyContainer');
+            
+            if (history.length === 0) {
+                $container.html('<p class="text-muted text-center">Belum ada riwayat simulasi</p>');
+                return;
+            }
+            
+            let historyHtml = '';
+            history.forEach((item, idx) => {
+                const date = new Date(item.date).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
+                historyHtml += `
                 <div class="history-item d-flex justify-content-between align-items-center">
                     <div>
                         <strong style="color: var(--primary);">${formatRp(item.harga)}</strong> 
@@ -694,35 +687,31 @@
                     <button class="btn btn-sm btn-outline-danger delete-history" data-index="${idx}"><i class="fas fa-trash-alt"></i></button>
                 </div>
             `;
-        });
-        $container.html(historyHtml);
-    }
-
-    // --- Event Listeners ---
-    $(function() {
-        renderHistory();
-
-        // Hitung
-        $('#hitungBtn').on('click', hitungKPR);
-        $('input').on('keypress', function(e){
-            if(e.which === 13) hitungKPR();
-        });
-
-        // Simpan
-        $('#saveBtn').on('click', function() {
-            const result = hitungKPR();
-            if (!result) return; 
-
-            let history = JSON.parse(localStorage.getItem('kprHistory') || '[]');
-            history.unshift({
-                date: new Date().toISOString(),
-                ...result
             });
-            if (history.length > 10) history = history.slice(0, 10);
-            
-            localStorage.setItem('kprHistory', JSON.stringify(history));
+            $container.html(historyHtml);
+        }
+
+        // --- Event Listeners ---
+        $(function() {
             renderHistory();
-            alert('✅ Simulasi berhasil disimpan!');
+
+            // Hitung
+            $('#hitungBtn').on('click', hitungKPR);
+            $('input').on('keypress', function(e){
+                if(e.which === 13) hitungKPR();
+            });
+
+            // Simpan
+            $('#saveBtn').on('click', function() {
+                const result = hitungKPR();
+                if (!result) return; 
+                
+                let history = JSON.parse(localStorage.getItem('kprHistory') || '[]');
+                history.unshift({
+                    date: new Date().toISOString(),
+                    ...result
+                });
+                if (history.length > 10) history = history.slice(0, 10);
         });
 
         // Hapus Item Riwayat
