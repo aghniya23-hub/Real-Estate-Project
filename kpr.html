@@ -497,86 +497,95 @@
                 <p>Telepon: +62 812-3456-7890</p>
             </div>
         </div>
-   
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let kprHistory = [];
         let currentTheme = 'light';
+        let paymentChart;
 
-        // --- Theme Toggle (tanpa localStorage) ---
-        const themeToggle = $('#themeToggle');
-        const updateThemeToggleText = (theme) => {
-            themeToggle.html(theme === 'dark' ? '</i> Light' : 'Dark');
+        const formatRp = (num) => 'Rp ' + Number(num).toLocaleString('id-ID');
+        const getVal = (id) => {
+            const val = $('#' + id).val().toString().replace(/[^\d]/g, '');
+            return Number(val) || 0;
         };
 
+        // --- Theme Toggle ---
+        const themeToggle = $('#themeToggle');
+        
         themeToggle.on('click', function() {
             if (currentTheme === 'dark') {
                 document.documentElement.removeAttribute('data-theme');
                 currentTheme = 'light';
-                updateThemeToggleText('light');
+                themeToggle.html('<i class="fas fa-moon"></i> Dark');
             } else {
                 document.documentElement.setAttribute('data-theme', 'dark');
                 currentTheme = 'dark';
-                updateThemeToggleText('dark');
+                themeToggle.html('<i class="fas fa-sun"></i> Light');
             }
             if (paymentChart) {
-                updateChart(paymentChart.config.data.datasets[0].data[0], paymentChart.config.data.datasets[0].data[1], true);
+                updateChart(getVal('hargaInput') - (getVal('hargaInput') * getVal('dpInput') / 100), 
+                            (getVal('hargaInput') - (getVal('hargaInput') * getVal('dpInput') / 100)) * 
+                            (getVal('bungaInput') / 100) * getVal('tenorInput'), true);
             }
         });
 
         // --- Logika KPR ---
         function hitungKPR() {
-            const harga = getVal('harga');
-            const dpNominal = getVal('dp');
-            const bunga = getVal('bunga') / 100;
-            const tenor = getVal('tenor');
-            
-            if (harga <= 0 || tenor <= 0 || dpNominal >= harga || dpNominal < 0) {
+            const harga = getVal('hargaInput');
+            const dpPercent = getVal('dpInput');
+            const bunga = getVal('bungaInput') / 100;
+            const tenor = getVal('tenorInput');
+
+            const dpNominal = (harga * dpPercent) / 100;
+
+            // Update DP Display
+            $('#dpNominalDisplay').text('Nominal: ' + formatRp(dpNominal));
+
+            // Validasi
+            if (harga <= 0 || tenor <= 0 || dpNominal >= harga || dpPercent > 100) {
                 $('#cicilanResult').text('Input Error');
-                $('#resultSubtext').text('Input tidak valid: Harga & Tenor > 0, DP < Harga.');
+                $('#resultSubtext').text('Input tidak valid: Harga & Tenor > 0, DP 0-100%.');
                 $('#pinjamanTotal, #totalBayar, #totalBunga, #lamaCicilan').text('Rp 0');
                 $('#amortTable').html('<tr><td colspan="5" class="text-center text-muted">Input tidak valid</td></tr>');
                 if (paymentChart) paymentChart.destroy();
                 return null;
             }
-            
+
             const pinjaman = harga - dpNominal;
             const bulanTotal = tenor * 12;
             const bungaBulanan = bunga / 12;
-            
+
             let cicilan = 0;
             if (bungaBulanan > 0) {
-                 // Rumus Cicilan Anuitas
                 cicilan = pinjaman * bungaBulanan / (1 - Math.pow(1 + bungaBulanan, -bulanTotal));
             } else {
-            // Jika bunga 0%
                 cicilan = pinjaman / bulanTotal;
             }
 
             const totalBayar = cicilan * bulanTotal;
             const totalBunga = totalBayar - pinjaman;
 
-            // Update Hasil
             updateResultDisplay(cicilan, pinjaman, totalBayar, totalBunga, bulanTotal);
             generateAmortization(pinjaman, cicilan, bungaBulanan, bulanTotal);
             updateChart(pinjaman, totalBunga);
-            
-            return { 
-                harga, 
-                dpNominal, 
-                pinjaman, 
-                bunga: getVal('bunga'), 
-                tenor, 
-                cicilan: Math.round(cicilan), 
-                totalBayar: Math.round(totalBayar) 
+
+            return {
+                harga,
+                dpNominal,
+                pinjaman,
+                bunga: getVal('bungaInput'),
+                tenor,
+                cicilan: Math.round(cicilan),
+                totalBayar: Math.round(totalBayar),
+                date: new Date().toISOString()
             };
         }
-        
+
         function updateResultDisplay(cicilan, pinjaman, totalBayar, totalBunga, bulanTotal) {
             $('#cicilanResult').text(formatRp(Math.round(cicilan)));
-            $('#resultSubtext').text(`Tenor ${Math.round(bulanTotal / 12)} tahun | Bunga ${getVal('bunga').toFixed(1)}%`);
+            $('#resultSubtext').text(`Tenor ${Math.round(bulanTotal / 12)} tahun | Bunga ${getVal('bungaInput').toFixed(1)}%`);
             $('#pinjamanTotal').text(formatRp(Math.round(pinjaman)));
             $('#totalBayar').text(formatRp(Math.round(totalBayar)));
             $('#totalBunga').text(formatRp(Math.round(totalBunga)));
@@ -587,50 +596,47 @@
             let sisaPinjaman = pinjaman;
             const maxRows = Math.min(12, bulanTotal);
             let tableBody = '';
-            
+
             for (let i = 1; i <= maxRows; i++) {
                 const bungaBln = sisaPinjaman * bungaBulanan;
                 const pokokBln = cicilan - bungaBln;
                 sisaPinjaman -= pokokBln;
-                
+
                 tableBody += `
-                <tr>
-                <td>${i}</td>
-                <td>${formatRp(Math.round(cicilan))}</td>
-                <td style="color: var(--warning);">${formatRp(Math.round(bungaBln))}</td>
-                <td style="color: var(--success);">${formatRp(Math.round(pokokBln))}</td>
-                <td>${formatRp(Math.round(Math.max(0, sisaPinjaman)))}</td>
-                </tr>
-            `;
+                    <tr>
+                        <td>${i}</td>
+                        <td>${formatRp(Math.round(cicilan))}</td>
+                        <td style="color: var(--warning);">${formatRp(Math.round(bungaBln))}</td>
+                        <td style="color: var(--success);">${formatRp(Math.round(pokokBln))}</td>
+                        <td>${formatRp(Math.round(Math.max(0, sisaPinjaman)))}</td>
+                    </tr>
+                `;
+            }
+            $('#amortTable').html(tableBody);
         }
-        $('#amortTable').html(tableBody);
-        }
-        
+
         function updateChart(pinjamanPokok, totalBunga, isThemeChange = false) {
             const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
             const warningColor = getComputedStyle(document.documentElement).getPropertyValue('--warning').trim();
             const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text').trim();
-            
+
             if (paymentChart && !isThemeChange) {
                 paymentChart.data.datasets[0].data = [Math.round(pinjamanPokok), Math.round(totalBunga)];
                 paymentChart.update();
                 return;
             }
-            
+
             const ctx = document.getElementById('paymentChart').getContext('2d');
             
             if (paymentChart) paymentChart.destroy();
-            
+
             paymentChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
                     labels: ['Pinjaman Pokok', 'Total Bunga'],
                     datasets: [{
                         data: [Math.round(pinjamanPokok), Math.round(totalBunga)],
-                        backgroundColor: [
-                            primaryColor, 
-                            warningColor
-                        ],
+                        backgroundColor: [primaryColor, warningColor],
                         hoverOffset: 10
                     }]
                 },
@@ -639,19 +645,12 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            labels: {
-                            color: textColor
-                            }
+                            labels: { color: textColor }
                         },
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    let label = context.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    label += formatRp(context.raw);
-                                    return label;
+                                    return (context.label || '') + ': ' + formatRp(context.raw);
                                 }
                             }
                         }
@@ -662,31 +661,30 @@
 
         // --- Manajemen Riwayat ---
         function renderHistory() {
-            const history = JSON.parse(localStorage.getItem('kprHistory') || '[]');
             const $container = $('#historyContainer');
-            
-            if (history.length === 0) {
+
+            if (kprHistory.length === 0) {
                 $container.html('<p class="text-muted text-center">Belum ada riwayat simulasi</p>');
                 return;
             }
-            
+
             let historyHtml = '';
-            history.forEach((item, idx) => {
+            kprHistory.forEach((item, idx) => {
                 const date = new Date(item.date).toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' });
                 historyHtml += `
-                <div class="history-item d-flex justify-content-between align-items-center">
-                    <div>
-                        <strong style="color: var(--primary);">${formatRp(item.harga)}</strong> 
-                        <span class="small text-muted">(${item.tenor} th, ${item.bunga}% Bunga)</span>
-                        <div class="small mt-1">
-                            <span class="fw-bold">Cicilan: ${formatRp(item.cicilan)}</span>
-                            <span class="text-muted"> | Total: ${formatRp(item.totalBayar)}</span>
+                    <div class="history-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong style="color: var(--primary);">${formatRp(item.harga)}</strong> 
+                            <span class="small text-muted">(${item.tenor} th, ${item.bunga}% Bunga)</span>
+                            <div class="small mt-1">
+                                <span class="fw-bold">Cicilan: ${formatRp(item.cicilan)}</span>
+                                <span class="text-muted"> | Total: ${formatRp(item.totalBayar)}</span>
+                            </div>
+                            <small class="text-muted d-block mt-1">${date}</small>
                         </div>
-                        <small class="text-muted d-block mt-1">${date}</small>
+                        <button class="btn btn-sm btn-outline-danger delete-history" data-index="${idx}"><i class="fas fa-trash-alt"></i></button>
                     </div>
-                    <button class="btn btn-sm btn-outline-danger delete-history" data-index="${idx}"><i class="fas fa-trash-alt"></i></button>
-                </div>
-            `;
+                `;
             });
             $container.html(historyHtml);
         }
@@ -695,59 +693,53 @@
         $(function() {
             renderHistory();
 
-            // Hitung
             $('#hitungBtn').on('click', hitungKPR);
             $('input').on('keypress', function(e){
                 if(e.which === 13) hitungKPR();
             });
 
-            // Simpan
+            $('#dpInput').on('input', function() {
+                const harga = getVal('hargaInput');
+                const dpPercent = getVal('dpInput');
+                const dpNominal = (harga * dpPercent) / 100;
+                $('#dpNominalDisplay').text('Nominal: ' + formatRp(dpNominal));
+            });
+
             $('#saveBtn').on('click', function() {
                 const result = hitungKPR();
-                if (!result) return; 
-                
-                let history = JSON.parse(localStorage.getItem('kprHistory') || '[]');
-                history.unshift({
-                    date: new Date().toISOString(),
-                    ...result
-                });
-                if (history.length > 10) history = history.slice(0, 10);
-        });
+                if (!result) return;
+                kprHistory.unshift(result);
+                if (kprHistory.length > 10) kprHistory = kprHistory.slice(0, 10);
+                renderHistory();
+                alert('Simulasi berhasil disimpan!');
+            });
 
-        // Hapus Item Riwayat
-        $(document).on('click', '.delete-history', function() {
-            if(!confirm('Anda yakin ingin menghapus simulasi ini?')) return;
-            const idx = $(this).data('index');
-            let history = JSON.parse(localStorage.getItem('kprHistory') || '[]');
-            history.splice(idx, 1);
-            localStorage.setItem('kprHistory', JSON.stringify(history));
-            renderHistory();
-        });
+            $(document).on('click', '.delete-history', function() {
+                if(!confirm('Anda yakin ingin menghapus simulasi ini?')) return;
+                const idx = $(this).data('index');
+                kprHistory.splice(idx, 1);
+                renderHistory();
+            });
 
-        // Hapus Semua Riwayat
-        $('#clearHistory').on('click', function() {
-            if(!confirm('Anda yakin ingin menghapus SEMUA riwayat simulasi?')) return;
-            localStorage.removeItem('kprHistory');
-            renderHistory();
-        });
-        
-        // Reset Input
-        $('#resetBtn').on('click', function() {
-            $('#harga').val(0);
-            $('#dp').val(0);
-            $('#bunga').val(0);
-            $('#tenor').val(0);
-            $('#cicilanResult').text('Rp 0');
-            $('#resultSubtext').text('Klik "Hitung Cicilan" untuk melihat hasil');
-            $('#pinjamanTotal, #totalBayar, #totalBunga, #lamaCicilan').text('Rp 0');
-            $('#amortTable').html('<tr><td colspan="5" class="text-center text-muted">Belum ada data</td></tr>');
-            if (paymentChart) paymentChart.destroy();
-        });
+            $('#clearHistory').on('click', function() {
+                if(!confirm('Anda yakin ingin menghapus SEMUA riwayat simulasi?')) return;
+                kprHistory = [];
+                renderHistory();
+            });
 
-        // Jalankan perhitungan awal saat halaman dimuat
-        hitungKPR();
-    });
-</script>
-    
+            $('#resetBtn').on('click', function() {
+                $('#hargaInput').val('450000000');
+                $('#dpInput').val('10');
+                $('#bungaInput').val('7.5');
+                $('#tenorInput').val('15');
+                $('#cicilanResult').text('Rp 0');
+                $('#resultSubtext').text('Klik "Hitung Cicilan" untuk melihat hasil');
+                $('#pinjamanTotal, #totalBayar, #totalBunga, #lamaCicilan').text('Rp 0');
+                $('#dpNominalDisplay').text('Nominal: Rp 45.000.000');
+                $('#amortTable').html('<tr><td colspan="5" class="text-center text-muted">Belum ada data</td></tr>');
+                if (paymentChart) paymentChart.destroy();
+            });
+        });
+    </script>
 </body>
 </html>
