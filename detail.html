@@ -1,28 +1,747 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Detail Properti - Rumah Jelas</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Properti - Lokaterra</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* Variabel Warna */
+        :root {
+            --bg: #f6f7fb;
+            --card: #ffffff;
+            --text: #0f1720;
+            --muted: #6b7280;
+            --primary: #1A4D2E; /* Hijau Tua Utama */
+            --accent: #94BFA7; /* Hijau Muda Aksent */
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --footer-bg: #1a4d2e;
+            --footer-darker-bg: #174228;
+            --footer-text: #e0e0e0;
+        }
+
+        /* Dark Mode */
+        [data-theme="dark"] {
+            --bg: #071019;
+            --card: #071827;
+            --text: #e6f0f0;
+            --muted: #9aa6ad;
+            --primary: #94BFA7;
+            --accent: #1A4D2E;
+            --footer-bg: #1A4D2E; 
+            --footer-darker-bg: #133923;
+            --footer-text: #cccccc;
+        }
+
+        /* Pengaturan Font dan Warna Dasar */
+        body {
+            font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background: var(--card);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .nav-link {
+            color: var(--text) !important;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary) !important;
+        }
+
+        .btn-outline-secondary {
+            color: var(--text);
+            border-color: var(--primary);
+        }
+
+        .btn-outline-secondary:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* --- HERO DETAIL --- */
+        .detail-hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            padding: 2rem 0;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .detail-hero h1 {
+            font-weight: 700;
+            font-size: 2rem;
+        }
+
+        .breadcrumb-custom {
+            margin-bottom: 1rem;
+        }
+
+        .breadcrumb-custom a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+        }
+
+        .breadcrumb-custom a:hover {
+            color: white;
+        }
+
+        /* --- LAYOUT GAMBAR + DESKRIPSI --- */
+        .detail-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .image-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .main-image:hover {
+            transform: scale(1.02);
+        }
+
+        .gallery-thumbnails {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+
+        .thumbnail {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .thumbnail:hover {
+            border-color: var(--primary);
+        }
+
+        .thumbnail.active {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+        /* --- DESKRIPSI SECTION --- */
+        .description-section {
+            background: var(--card);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .property-header {
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .property-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .property-location {
+            color: var(--muted);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .property-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .property-specs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .spec-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(26, 77, 46, 0.05);
+            border-radius: 8px;
+        }
+
+        .spec-item .icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .spec-item .label {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .spec-item .value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .btn-wishlist {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: auto;
+        }
+
+        .btn-wishlist:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* --- DESKRIPSI LENGKAP --- */
+        .description-full {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid rgba(26, 77, 46, 0.2);
+        }
+
+        .description-full h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .description-full p {
+            line-height: 1.8;
+            color: var(--muted);
+            margin-bottom: 1rem;
+        }
+
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(26, 77, 46, 0.05);
+            border-radius: 6px;
+        }
+
+        .feature-item i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .feature-item span {
+            font-weight: 500;
+        }
+
+        /* --- SIMILAR PROPERTIES --- */
+        .similar-section {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 2px solid rgba(26, 77, 46, 0.2);
+        }
+
+        .similar-section h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--primary);
+        }
+
+        .property-card {
+            background: var(--card);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .property-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .property-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .property-card-body {
+            padding: 1.5rem;
+        }
+
+        /* --- FOOTER --- */
+        .lokaterra-footer {
+            background-color: var(--footer-bg); 
+            color: var(--footer-text); 
+            padding-top: 40px; 
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+        }
+
+        .footer-container {
+            display: flex;
+            justify-content: space-around;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 40px; 
+        }
+
+        .footer-col {
+            width: 30%; 
+        }
+
+        .footer-col h3 {
+            font-size: 1.15em; 
+            margin-bottom: 12px;
+            font-weight: 600; 
+            color: #ffffff; 
+        }
+
+        .footer-col p,
+        .footer-col ul li a {
+            font-size: 1em; 
+            line-height: 1.6;
+            color: var(--footer-text); 
+            font-weight: 400; 
+        }
+
+        .footer-col ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-col ul li a {
+            text-decoration: none;
+        }
+
+        .footer-col ul li a:hover {
+            color: #ffffff;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .detail-container {
+                grid-template-columns: 1fr;
+            }
+
+            .property-specs {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .features-list {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .detail-hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .property-title {
+                font-size: 1.3rem;
+            }
+
+            .footer-container {
+                flex-direction: column;
+            }
+
+            .footer-col {
+                width: 100%;
+                margin-bottom: 25px;
+            }
+        }
+    </style>
 </head>
-<body>
-<nav class="navbar navbar-expand-lg" id="mainNavbar">
-  <div class="container">
-    <a class="navbar-brand fw-bold" href="index.html">Lokaterra</a>
-  </div>
-</nav>
+<body data-theme="light">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="img/Desain tanpa judul.png" alt="Lokaterra Logo" height="42" style="vertical-align: top; margin-right: 8px;"> Lokaterra
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item me-2"><a class="nav-link" href="index.html">Beranda</a></li>
+                    <li class="nav-item me-2"><a class="nav-link" href="properties.html">Properti</a></li>
+                    <li class="nav-item me-2"><a class="nav-link" href="wishlist.html">Wishlist</a></li>
+                    <li class="nav-item me-3"><a class="nav-link" href="about.html">Tentang</a></li>
+                    <li class="nav-item">
+                        <button id="themeToggle" class="btn btn-outline-secondary btn-sm"><i class="fas fa-moon"></i> Dark</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-<main class="py-5">
-  <div class="container" id="detailContainer">
-    <div class="text-center">Memuat detail...</div>
-  </div>
-</main>
+    <!-- HERO DETAIL -->
+    <div class="detail-hero">
+        <div class="container">
+            <div class="breadcrumb-custom">
+                <a href="index.html">Beranda</a> / 
+                <a href="properties.html">Properti</a> / 
+                <span id="breadcrumbName">Detail Properti</span>
+            </div>
+            <h1 id="heroTitle">Detail Properti</h1>
+        </div>
+    </div>
 
-<script src="js/detail.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- MAIN CONTENT -->
+    <main class="container pb-5">
+        <div class="detail-container">
+            <!-- GAMBAR SECTION -->
+            <div class="image-section">
+                <img id="mainImage" src="" alt="Gambar Properti" class="main-image">
+                <div class="gallery-thumbnails" id="galleryThumbnails">
+                    <!-- Thumbnails akan di-generate oleh JS -->
+                </div>
+            </div>
+
+            <!-- DESKRIPSI SECTION -->
+            <div class="description-section">
+                <div class="property-header">
+                    <h2 class="property-title" id="propTitle">Nama Properti</h2>
+                    <p class="property-location" id="propLocation">
+                        <i class="fas fa-map-marker-alt"></i> Lokasi
+                    </p>
+                    <p class="property-price" id="propPrice">Rp 0</p>
+                </div>
+
+                <!-- SPEC ICONS -->
+                <div class="property-specs">
+                    <div class="spec-item">
+                        <div class="icon"><i class="fas fa-bed"></i></div>
+                        <div class="label">Kamar Tidur</div>
+                        <div class="value" id="specKamar">0</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="icon"><i class="fas fa-bath"></i></div>
+                        <div class="label">Kamar Mandi</div>
+                        <div class="value" id="specKamarMandi">0</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="icon"><i class="fas fa-expand"></i></div>
+                        <div class="label">Luas Tanah</div>
+                        <div class="value" id="specLuasTanah">0 m²</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="icon"><i class="fas fa-home"></i></div>
+                        <div class="label">Luas Bangunan</div>
+                        <div class="value" id="specLuasBangunan">0 m²</div>
+                    </div>
+                </div>
+
+                <!-- ACTION BUTTONS -->
+                <div class="action-buttons">
+                    <button class="btn-primary" id="btnKontak">
+                        <i class="fas fa-phone"></i> Hubungi Agen
+                    </button>
+                    <button class="btn-wishlist" id="btnWishlist">
+                        <i class="far fa-heart"></i> Wishlist
+                    </button>
+                </div>
+
+                <!-- DESKRIPSI LENGKAP -->
+                <div class="description-full">
+                    <h3>Deskripsi Properti</h3>
+                    <p id="propDescription">Deskripsi lengkap properti akan ditampilkan di sini...</p>
+
+                    <h3 style="margin-top: 2rem;">Fasilitas & Fitur</h3>
+                    <div class="features-list" id="featuresList">
+                        <!-- Features akan di-generate oleh JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SIMILAR PROPERTIES -->
+        <div class="similar-section">
+            <h2>Properti Serupa Lainnya</h2>
+            <div class="row" id="similarProperties">
+                <!-- Cards akan di-generate oleh JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="lokaterra-footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>Lokaterra</h3>
+                <p>Platform pencarian properti terpercaya dengan informasi jelas dan akurat.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Navigasi</h3>
+                <ul>
+                    <li><a href="index.html">Beranda</a></li>
+                    <li><a href="properties.html">Properti</a></li>
+                    <li><a href="kpr.html">Simulasi KPR</a></li>
+                    <li><a href="about.html">Tentang</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Kontak</h3>
+                <p>Email: support@lokaterra.com</p>
+                <p>Telepon: +62 812-3456-7890</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Get property ID dari URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const propertyId = parseInt(urlParams.get('id')) || 1;
+
+        let allProperties = [];
+        let currentProperty = null;
+
+        // Load data properties
+        fetch('data/properties.json')
+            .then(res => res.json())
+            .then(data => {
+                allProperties = data;
+                currentProperty = data.find(p => p.id === propertyId);
+                
+                if (currentProperty) {
+                    renderDetail();
+                    renderSimilarProperties();
+                } else {
+                    document.querySelector('main').innerHTML = '<p class="text-center text-danger mt-5">Properti tidak ditemukan!</p>';
+                }
+            })
+            .catch(err => console.error('Error loading data:', err));
+
+        // RENDER DETAIL
+        function renderDetail() {
+            // Update hero
+            $('#heroTitle').text(currentProperty.nama);
+            $('#breadcrumbName').text(currentProperty.nama);
+
+            // Update header
+            $('#propTitle').text(currentProperty.nama);
+            $('#propLocation').html(`<i class="fas fa-map-marker-alt"></i> ${currentProperty.lokasi}`);
+            $('#propPrice').text('Rp ' + currentProperty.harga.toLocaleString('id-ID'));
+
+            // Update specs
+            $('#specKamar').text(currentProperty.kamar);
+            $('#specKamarMandi').text(currentProperty.kamarMandi);
+            $('#specLuasTanah').text(currentProperty.luasTanah + ' m²');
+            $('#specLuasBangunan').text(currentProperty.luasBangunan + ' m²');
+
+            // Update deskripsi
+            $('#propDescription').text(currentProperty.deskripsi);
+
+            // Update main image
+            const mainImg = currentProperty.images && currentProperty.images.length > 0 
+                ? currentProperty.images[0] 
+                : currentProperty.foto;
+            $('#mainImage').attr('src', mainImg);
+
+            // Render gallery thumbnails
+            const images = currentProperty.images || [currentProperty.foto];
+            let thumbsHtml = '';
+            images.forEach((img, idx) => {
+                thumbsHtml += `<img src="${img}" alt="Foto ${idx+1}" class="thumbnail ${idx === 0 ? 'active' : ''}" onclick="changeMainImage('${img}', this)">`;
+            });
+            $('#galleryThumbnails').html(thumbsHtml);
+
+            // Render features
+            let featuresHtml = '';
+            if (currentProperty.fasilitas && Array.isArray(currentProperty.fasilitas)) {
+                currentProperty.fasilitas.forEach(f => {
+                    featuresHtml += `
+                        <div class="feature-item">
+                            <i class="fas fa-check-circle"></i>
+                            <span>${f}</span>
+                        </div>
+                    `;
+                });
+            }
+            $('#featuresList').html(featuresHtml);
+
+            // Update wishlist button
+            checkWishlist();
+        }
+
+        // Change main image
+        function changeMainImage(src, elem) {
+            $('#mainImage').attr('src', src);
+            $('.thumbnail').removeClass('active');
+            $(elem).addClass('active');
+        }
+
+        // WISHLIST FUNCTION
+        function checkWishlist() {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const isInWishlist = wishlist.find(w => w.id === currentProperty.id);
+            
+            const btn = $('#btnWishlist');
+            if (isInWishlist) {
+                btn.html('<i class="fas fa-heart"></i> Hapus dari Wishlist');
+                btn.style = 'background: #f59e0b; color: white;';
+            } else {
+                btn.html('<i class="far fa-heart"></i> Wishlist');
+            }
+        }
+
+        $('#btnWishlist').on('click', function() {
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const idx = wishlist.findIndex(w => w.id === currentProperty.id);
+            
+            if (idx > -1) {
+                wishlist.splice(idx, 1);
+                alert('Dihapus dari wishlist!');
+            } else {
+                wishlist.push({
+                    id: currentProperty.id,
+                    nama: currentProperty.nama,
+                    harga: currentProperty.harga,
+                    foto: currentProperty.foto,
+                    lokasi: currentProperty.lokasi
+                });
+                alert('Ditambahkan ke wishlist!');
+            }
+            
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            checkWishlist();
+        });
+
+        $('#btnKontak').on('click', function() {
+            alert('Hubungi Agen:\nNama: Agen Properti\nHP: +62 812-3456-7890');
+        });
+
+        // RENDER SIMILAR PROPERTIES
+        function renderSimilarProperties() {
+            const similar = allProperties
+                .filter(p => p.id !== currentProperty.id && p.tipe === currentProperty.tipe)
+                .slice(0, 3);
+
+            let html = '';
+            similar.forEach(prop => {
+                html += `
+                    <div class="col-md-4 mb-4">
+                        <div class="property-card" onclick="goToDetail(${prop.id})">
+                            <img src="${prop.foto}" alt="${prop.nama}">
+                            <div class="property-card-body">
+                                <h5 style="font-weight: 700;">${prop.nama}</h5>
+                                <p style="font-size: 0.9rem; color: #6b7280; margin-bottom: 0.5rem;">
+                                    <i class="fas fa-map-marker-alt"></i> ${prop.lokasi}
+                                </p>
+                                <p style="font-size: 1.1rem; font-weight: 700; color: #1A4D2E;">
+                                    Rp ${prop.harga.toLocaleString('id-ID')}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            $('#similarProperties').html(html || '<p class="text-muted">Properti serupa tidak ditemukan</p>');
+        }
+
+        function goToDetail(id) {
+            window.location.href = `detail.html?id=${id}`;
+        }
+
+        // THEME TOGGLE
+        $('#themeToggle').on('click', function() {
+            const theme = $('body').attr('data-theme');
+            if (theme === 'light') {
+                $('body').attr('data-theme', 'dark');
+                $('#themeToggle').html('<i class="fas fa-sun"></i> Light');
+            } else {
+                $('body').attr('data-theme', 'light');
+                $('#themeToggle').html('<i class="fas fa-moon"></i> Dark');
+            }
+        });
+    </script>
 </body>
 </html>
