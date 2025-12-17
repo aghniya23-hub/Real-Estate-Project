@@ -449,6 +449,8 @@
     function formatRupiah(num){ return "Rp " + Number(num).toLocaleString('id-ID'); }
 
     // Theme toggle (persist)
+    let currentTheme = localStorage.getItem('theme') || 'light';
+
     function initTheme() {
         if (currentTheme === 'dark') {
             document.documentElement.setAttribute('data-theme', 'dark');
@@ -482,6 +484,7 @@
         }
         
         updateThemeIcon();
+    }
 
     $(document).on('click', '#themeToggle', toggleDarkMode);
 
