@@ -210,23 +210,51 @@
         function formatRupiah(num){ return "Rp " + (Number(num) || 0).toLocaleString('id-ID'); }
 
         // ===== theme
-        (function(){
-            const saved = localStorage.getItem('theme');
-            if(saved === 'dark') document.documentElement.setAttribute('data-theme','dark');
-            $('#themeToggle').text(saved==='dark' ? 'Light' : 'Dark');
-            $('#themeToggle').on('click', function(){
-                const cur = document.documentElement.getAttribute('data-theme');
-                if(cur === 'dark'){
-                    document.documentElement.removeAttribute('data-theme');
-                    localStorage.setItem('theme','light');
-                    $(this).text('Dark');
-                } else {
-                    document.documentElement.setAttribute('data-theme','dark');
-                    localStorage.setItem('theme','dark');
-                    $(this).text('Light');
-                }
-            });
-        })();
+    function initTheme() {
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+        updateThemeIcon();
+    }
+
+    function updateThemeIcon() {
+        const $btn = $('#themeToggle');
+        const $lightIcon = $btn.find('.light-icon');
+        const $darkIcon = $btn.find('.dark-icon');
+        
+        if (currentTheme === 'dark') {
+            $lightIcon.hide();
+            $darkIcon.show();
+        } else {
+            $lightIcon.show();
+            $darkIcon.hide();
+        }
+    }
+
+    function toggleDarkMode() {
+        if (currentTheme === 'dark') {
+            document.documentElement.removeAttribute('data-theme');
+            currentTheme = 'light';
+            localStorage.setItem('theme', 'light');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            currentTheme = 'dark';
+            localStorage.setItem('theme', 'dark');
+        }
+        
+        updateThemeIcon();
+        
+        // Update chart colors kalau ada
+        if (paymentChart) {
+            const harga = getVal('hargaInput');
+            const dpPercent = getVal('dpInput');
+            const pinjaman = harga - (harga * dpPercent / 100);
+            const totalBunga = pinjaman * (getVal('bungaInput') / 100) * getVal('tenorInput');
+            updateChart(pinjaman, totalBunga);
+        }
+    }
+
+    $(document).on('click', '#themeToggle', toggleDarkMode);
 
         // ===== render list
         function renderList(list){
