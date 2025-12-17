@@ -590,24 +590,51 @@
         };
 
         // --- Theme Toggle ---
-        const themeToggle = $('#themeToggle');
+    function initTheme() {
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+        updateThemeIcon();
+    }
+
+    function updateThemeIcon() {
+        const $btn = $('#themeToggle');
+        const $lightIcon = $btn.find('.light-icon');
+        const $darkIcon = $btn.find('.dark-icon');
         
-        themeToggle.on('click', function() {
-            if (currentTheme === 'dark') {
-                document.documentElement.removeAttribute('data-theme');
-                currentTheme = 'light';
-                themeToggle.html('<i class="fas fa-moon"></i>');
-            } else {
-                document.documentElement.setAttribute('data-theme');
-                currentTheme = 'dark';
-                themeToggle.html('<i class="fas fa-sun"></i>');
-            }
-            if (paymentChart) {
-                updateChart(getVal('hargaInput') - (getVal('hargaInput') * getVal('dpInput') / 100), 
-                            (getVal('hargaInput') - (getVal('hargaInput') * getVal('dpInput') / 100)) * 
-                            (getVal('bungaInput') / 100) * getVal('tenorInput'), true);
-            }
-        });
+        if (currentTheme === 'dark') {
+            $lightIcon.hide();
+            $darkIcon.show();
+        } else {
+            $lightIcon.show();
+            $darkIcon.hide();
+        }
+    }
+
+    function toggleDarkMode() {
+        if (currentTheme === 'dark') {
+            document.documentElement.removeAttribute('data-theme');
+            currentTheme = 'light';
+            localStorage.setItem('theme', 'light');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            currentTheme = 'dark';
+            localStorage.setItem('theme', 'dark');
+        }
+        
+        updateThemeIcon();
+        
+        // Update chart colors kalau ada
+        if (paymentChart) {
+            const harga = getVal('hargaInput');
+            const dpPercent = getVal('dpInput');
+            const pinjaman = harga - (harga * dpPercent / 100);
+            const totalBunga = pinjaman * (getVal('bungaInput') / 100) * getVal('tenorInput');
+            updateChart(pinjaman, totalBunga);
+        }
+    }
+
+    $(document).on('click', '#themeToggle', toggleDarkMode);
 
         // --- Logika KPR ---
         function hitungKPR() {
