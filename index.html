@@ -34,7 +34,10 @@
                     <li class="nav-item me-2"><a class="nav-link" href="wishlist.html">Wishlist</a></li>
                     <li class="nav-item me-3"><a class="nav-link" href="about.html">Tentang</a></li>
                     <li class="nav-item">
-                        <button id="themeToggle" class="btn btn-outline-secondary btn-sm">Dark</button>
+                        <button class="btn btn-sm border-0 p-1" id="themeToggle" title="Toggle Dark Mode">
+                            <i class="bi bi-moon-stars-fill light-icon fs-5"></i>
+                            <i class="bi bi-sun-fill dark-icon fs-5" style="display: none;"></i>
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -302,6 +305,17 @@
                 setTimeout(()=> $(this).text('❤️ Wishlist'), 1200);
             });
         });
+
+        // footer feedback
+        function handleFeedback(event) {
+            event.preventDefault();
+            const textarea = event.target.querySelector('textarea');
+            const feedback = textarea.value;
+            
+            // Simulasi pengiriman feedback
+            alert('Terima kasih atas masukan Anda! Kami akan segera meninjaunya.');
+            textarea.value = '';
+        }
     </script>
 
 </body>
