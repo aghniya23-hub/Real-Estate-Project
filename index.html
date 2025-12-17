@@ -111,31 +111,84 @@
         </div>
     </main>
 
-    <footer class="lokaterra-footer">
-        <div class="footer-container">
-            <div class="footer-col">
-                <h3>Lokaterra</h3>
-                <p>Platform pencarian properti terpercaya dengan informasi jelas dan akurat.</p>
+       <footer>
+        <div class="container footer-content">
+            <div class="row">
+                <!-- Hubungi Kami -->
+                <div class="col-lg-4 col-md-6 footer-section">
+                    <h5><i class="bi bi-telephone-fill"></i> Hubungi Kami</h5>
+                    <div class="contact-item">
+                        <i class="bi bi-telephone"></i>
+                        <div>
+                            <strong>Telepon</strong><br>
+                            +62 (21) 1234-5678<br>
+                            +62 812-3456-7890
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="bi bi-envelope"></i>
+                        <div>
+                            <strong>Email</strong><br>
+                            info@lokaterra.com<br>
+                            support@lokaterra.com
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="bi bi-geo-alt"></i>
+                        <div>
+                            <strong>Alamat</strong><br>
+                            Jl. Merdeka No. 45<br>
+                            Jawa Tengah 12190
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alasan Pilih Lokaterra -->
+                <div class="col-lg-4 col-md-6 footer-section">
+                    <h5><i class="bi bi-star-fill"></i> Alasan Pilih Lokaterra</h5>
+                    <p>
+                        <i class="bi bi-check-circle" style="color: var(--primary);"></i> <strong>Terpercaya</strong> — Setiap listing terverifikasi
+                    </p>
+                    <p>
+                        <i class="bi bi-check-circle" style="color: var(--primary);"></i> <strong>Transparan</strong> — Informasi lengkap dan jelas
+                    </p>
+                    <p>
+                        <i class="bi bi-check-circle" style="color: var(--primary);"></i> <strong>Mudah</strong> — Proses cepat dan simpel
+                    </p>
+                    <p>
+                        <i class="bi bi-check-circle" style="color: var(--primary);"></i> <strong>Aman</strong> — Konsultasi dengan agen resmi
+                    </p>
+                </div>
+
+                <!-- Kritik & Saran -->
+                <div class="col-lg-4 footer-section">
+                    <h5><i class="bi bi-chat-left-text-fill"></i> Kritik & Saran</h5>
+                    <p style="margin-bottom: 12px; font-size: 0.95rem;">Kami ingin terus berkembang untuk melayani Anda lebih baik. Bagikan masukan Anda!</p>
+                    <form id="feedbackForm" onsubmit="handleFeedback(event)">
+                        <textarea 
+                            class="form-control form-control-sm" 
+                            placeholder="Tulis kritik dan saran Anda..." 
+                            rows="3"
+                            style="background-color: var(--bg); color: var(--text); border-color: var(--primary);"
+                            required
+                        ></textarea>
+                        <button type="submit" class="btn btn-sm mt-2 fw-bold" style="background-color: var(--primary); color: white;">
+                            <i class="bi bi-send"></i> Kirim
+                        </button>
+                    </form>
+                </div>
             </div>
 
-            <div class="footer-col">
-                <h3>Navigasi</h3>
-                <ul>
-                    <li><a href="#">Beranda</a></li>
-                    <li><a href="#properties.html">Properti</a></li>
-                    <li><a href="#">Simulasi KPR</a></li>
-                    <li><a href="#">Tentang</a></li>
-                </ul>
-            </div>
+            <!-- Divider -->
+            <div class="footer-divider"></div>
 
-            <div class="footer-col">
-                <h3>Kontak</h3>
-                <p>Email: support@lokaterra.com</p>
-                <p>Telepon: +62 812-3456-7890</p>
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <div class="footer-bottom-text">
+                    &copy; 2025 <strong>Lokaterra</strong> - Tempat Terbaik untuk Menemukan Hunian Impian Anda. All Rights Reserved.
+                </div>
             </div>
         </div>
-
-        
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
