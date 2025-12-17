@@ -407,6 +407,44 @@
         </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
+
+    <script>
+            function initTheme() {
+        if (currentTheme === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+        updateThemeIcon();
+    }
+
+    function updateThemeIcon() {
+        const $btn = $('#themeToggle');
+        const $lightIcon = $btn.find('.light-icon');
+        const $darkIcon = $btn.find('.dark-icon');
+        
+        if (currentTheme === 'dark') {
+            $lightIcon.hide();
+            $darkIcon.show();
+        } else {
+            $lightIcon.show();
+            $darkIcon.hide();
+        }
+    }
+
+    function toggleDarkMode() {
+        if (currentTheme === 'dark') {
+            document.documentElement.removeAttribute('data-theme');
+            currentTheme = 'light';
+            localStorage.setItem('theme', 'light');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            currentTheme = 'dark';
+            localStorage.setItem('theme', 'dark');
+        }
+        
+        updateThemeIcon();
+        
+
+    $(document).on('click', '#themeToggle', toggleDarkMode);
+    </script>
     </body>
 </html>
