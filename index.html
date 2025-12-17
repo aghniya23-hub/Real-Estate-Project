@@ -241,18 +241,6 @@
             currentTheme = 'dark';
             localStorage.setItem('theme', 'dark');
         }
-        
-        updateThemeIcon();
-        
-        // Update chart colors kalau ada
-        if (paymentChart) {
-            const harga = getVal('hargaInput');
-            const dpPercent = getVal('dpInput');
-            const pinjaman = harga - (harga * dpPercent / 100);
-            const totalBunga = pinjaman * (getVal('bungaInput') / 100) * getVal('tenorInput');
-            updateChart(pinjaman, totalBunga);
-        }
-    }
 
     $(document).on('click', '#themeToggle', toggleDarkMode);
 
